@@ -34,18 +34,20 @@ export function DealingDashboard() {
   };
   return (
     <DashboardLayout>
-      <div className="space-y-8 animate-fade-in">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dealing Desk</h1>
-            <p className="text-muted-foreground">Real-time exposure and margin monitoring.</p>
+      <div className="space-y-10 animate-fade-in">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h1 className="text-3xl font-black tracking-tight">Dealing Desk</h1>
+            <p className="text-muted-foreground text-sm font-medium">Real-time exposure and margin monitoring across secure nodes.</p>
           </div>
-          <div className="flex gap-2">
-            <Badge variant="outline" className="px-3 py-1 font-mono text-[10px] border-slate-200 dark:border-slate-800">SERVER: HK-CORE-01</Badge>
+          <div className="flex items-center gap-3 shrink-0">
+            <Badge variant="outline" className="px-4 py-1.5 font-mono text-[10px] font-bold border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm">
+              NODE: HK-CORE-01
+            </Badge>
             <Badge
               variant="default"
               className={cn(
-                "px-3 py-1 bg-emerald-500 cursor-pointer transition-all active:scale-95 flex items-center gap-1.5",
+                "px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 cursor-pointer transition-all active:scale-95 flex items-center gap-2 border-none font-black text-[10px] tracking-widest uppercase",
                 isRefreshing ? "opacity-50" : "animate-pulse"
               )}
               onClick={handleRefresh}
@@ -55,54 +57,58 @@ export function DealingDashboard() {
             </Badge>
           </div>
         </div>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {DEALING_METRICS.map((metric, i) => (
-            <MetricCard 
+            <MetricCard
               key={i}
-              title={metric.title} 
-              value={metric.value} 
-              trend={metric.trend} 
-              change={metric.change} 
-              icon={metric.icon} 
+              title={metric.title}
+              value={metric.value}
+              trend={metric.trend}
+              change={metric.change}
+              icon={metric.icon}
             />
           ))}
         </div>
-        <div className="grid gap-6 lg:grid-cols-4">
-          <PnLChart />
-          <MarginChart />
+        <div className="grid gap-8 lg:grid-cols-4">
+          <div className="lg:col-span-3">
+            <PnLChart />
+          </div>
+          <div className="lg:col-span-1">
+            <MarginChart />
+          </div>
         </div>
-        <Card className="border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold tracking-tight">Active Market Symbols</CardTitle>
+        <Card className="border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm overflow-hidden">
+          <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 py-4">
+            <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground">Active Market Symbols</CardTitle>
           </CardHeader>
-          <CardContent className="p-0 sm:p-6">
-            <div className="overflow-x-auto pb-2">
-              <Table className="min-w-[600px]">
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table className="min-w-[800px]">
                 <TableHeader>
-                  <TableRow className="border-slate-100 dark:border-slate-800">
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Symbol</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Volume (24h)</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Change</TableHead>
-                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Sentiment</TableHead>
-                    <TableHead className="text-right text-[10px] font-black uppercase tracking-widest">Action</TableHead>
+                  <TableRow className="border-slate-100 dark:border-slate-800 hover:bg-transparent">
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest px-6 h-12">Symbol</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest h-12">Volume (24h)</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest h-12">Change</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest h-12">Sentiment</TableHead>
+                    <TableHead className="text-right text-[10px] font-black uppercase tracking-widest px-6 h-12">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {TOP_SYMBOLS.map((s) => (
-                    <TableRow key={s.symbol} className="hover:bg-muted/30 transition-colors border-slate-100 dark:border-slate-800">
-                      <TableCell className="font-bold tracking-tight">{s.symbol}</TableCell>
-                      <TableCell className="text-muted-foreground font-medium tabular-nums">{s.volume}</TableCell>
+                    <TableRow key={s.symbol} className="hover:bg-muted/30 transition-colors border-slate-100 dark:border-slate-800 group">
+                      <TableCell className="font-bold tracking-tight px-6 py-4">{s.symbol}</TableCell>
+                      <TableCell className="text-muted-foreground font-bold tabular-nums py-4">{s.volume}</TableCell>
                       <TableCell className={cn(
-                        "font-bold tabular-nums",
+                        "font-black tabular-nums py-4",
                         s.change.startsWith("+") ? "text-emerald-500" : "text-rose-500"
                       )}>
                         {s.change}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-4">
                         <Badge
                           variant="secondary"
                           className={cn(
-                            "text-[10px] font-bold uppercase tracking-tight",
+                            "text-[10px] font-black uppercase tracking-tighter px-2",
                             s.status === "Bullish" && "bg-emerald-500/10 text-emerald-600 border-none",
                             s.status === "Bearish" && "bg-rose-500/10 text-rose-600 border-none",
                             s.status === "Volatile" && "bg-amber-500/10 text-amber-600 border-none",
@@ -112,12 +118,12 @@ export function DealingDashboard() {
                           {s.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right px-6 py-4">
                         <button
-                          className="text-xs font-black uppercase tracking-wider text-primary hover:underline"
+                          className="text-xs font-black uppercase tracking-[0.2em] text-primary hover:text-primary/70 transition-colors underline decoration-primary/30 underline-offset-4"
                           onClick={() => handleTradeDetails(s.symbol)}
                         >
-                          Trade Details
+                          Inspect
                         </button>
                       </TableCell>
                     </TableRow>

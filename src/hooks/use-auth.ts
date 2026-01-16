@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, UserRole } from '@shared/types';
 import { USER_PROFILE } from '@/lib/mock-data';
@@ -8,34 +8,42 @@ export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const initRef = useRef(false);
   useEffect(() => {
+    // Avoid re-initialization if already processed in this component lifecycle
+    if (initRef.current) return;
+    initRef.current = true;
     const stored = localStorage.getItem(AUTH_KEY);
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        if (parsed && typeof parsed === 'object' && parsed.id) {
+        const parsed = JSON.parse(stored) as User;
+        // Verify minimum data integrity for the session object
+        if (parsed && typeof parsed === 'object' && parsed.id && parsed.role) {
           setUser(parsed);
           setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem(AUTH_KEY);
         }
       } catch (e) {
+        console.error("Auth session corrupted, purging session data...");
         localStorage.removeItem(AUTH_KEY);
       }
     }
     setIsLoading(false);
   }, []);
   const login = useCallback((email: string, role: UserRole = 'admin') => {
-    // Robust identifier fallback for guests or empty strings
-    const effectiveEmail = email?.trim() || (role === 'guest' ? 'guest-node@skylinkscapital.com' : 'admin@skylinkscapital.com');
+    const sanitizedEmail = email?.trim().toLowerCase() || (role === 'guest' ? 'guest-node@skylinkscapital.com' : 'admin@skylinkscapital.com');
+    // Construct identity object with consistent corporate branding
     const sessionUser: User = {
       ...USER_PROFILE,
-      id: role === 'guest' ? `guest-${crypto.randomUUID().slice(0, 8)}` : USER_PROFILE.id,
+      id: role === 'guest' ? `guest-${crypto.randomUUID().split('-')[0]}` : USER_PROFILE.id,
       name: role === 'guest' ? `Guest Collaborator` : "Alexander Vance",
-      email: effectiveEmail,
+      email: sanitizedEmail,
       role: role,
       status: 'active',
-      avatar: role === 'admin' 
-        ? USER_PROFILE.avatar 
-        : `https://ui-avatars.com/api/?name=Guest&background=0F172A&color=fff`,
+      avatar: role === 'admin'
+        ? USER_PROFILE.avatar
+        : `https://ui-avatars.com/api/?name=Guest+Collab&background=020B4B&color=fff&bold=true`,
     };
     localStorage.setItem(AUTH_KEY, JSON.stringify(sessionUser));
     setUser(sessionUser);
@@ -45,7 +53,7 @@ export function useAuth() {
     localStorage.removeItem(AUTH_KEY);
     setUser(null);
     setIsAuthenticated(false);
-    navigate('/login');
+    navigate('/login', { replace: true });
   }, [navigate]);
   return {
     user,

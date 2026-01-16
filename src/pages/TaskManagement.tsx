@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { TASK_COLUMNS, PROJECT_TASKS } from "@/lib/mock-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Plus, GripVertical, Filter } from "lucide-react";
-import { motion, Reorder } from "framer-motion";
+import { Plus, GripVertical, Filter, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 export function TaskManagement() {
   const [tasks, setTasks] = useState(PROJECT_TASKS);
+  const moveTask = useCallback((taskId: string) => {
+    setTasks(prev => {
+      const taskIndex = prev.findIndex(t => t.id === taskId);
+      if (taskIndex === -1) return prev;
+      const newTasks = [...prev];
+      const task = newTasks[taskIndex];
+      const currentColumnIndex = TASK_COLUMNS.findIndex(c => c.id === task.column);
+      const nextColumnIndex = (currentColumnIndex + 1) % TASK_COLUMNS.length;
+      newTasks[taskIndex] = {
+        ...task,
+        column: TASK_COLUMNS[nextColumnIndex].id
+      };
+      toast.info(`Task moved to ${TASK_COLUMNS[nextColumnIndex].title}`);
+      return newTasks;
+    });
+  }, []);
+  const addNewTask = () => {
+    const newTask = {
+      id: `task-${Math.floor(Math.random() * 10000)}`,
+      title: "New Platform Audit Request",
+      priority: "Medium" as const,
+      column: "backlog",
+      user: "Alex V.",
+      avatar: "https://i.pravatar.cc/150?u=1"
+    };
+    setTasks([newTask, ...tasks]);
+    toast.success("New task created in Backlog");
+  };
   const getColumnTasks = (columnId: string) => tasks.filter(t => t.column === columnId);
   return (
     <DashboardLayout>
@@ -23,61 +52,76 @@ export function TaskManagement() {
             <Button variant="outline" size="sm" className="flex items-center gap-2">
               <Filter className="h-4 w-4" /> Filter
             </Button>
-            <Button size="sm" className="btn-gradient flex items-center gap-2">
+            <Button size="sm" className="btn-gradient flex items-center gap-2" onClick={addNewTask}>
               <Plus className="h-4 w-4" /> New Task
             </Button>
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <MetricCard title="Active Sprints" value="12" trend="up" change="+2" icon="TrendingUp" />
-          <MetricCard title="Open Tasks" value="48" trend="down" change="-5" icon="Users" />
+          <MetricCard title="Open Tasks" value={tasks.filter(t => t.column !== 'done').length.toString()} trend="down" change="-5" icon="Users" />
           <MetricCard title="Team Velocity" value="84%" trend="up" change="+4%" icon="Zap" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full min-h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[600px]">
           {TASK_COLUMNS.map((column) => (
             <div key={column.id} className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-1">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                  {column.title} <span className="ml-2 text-xs font-normal opacity-50">({getColumnTasks(column.id).length})</span>
+                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+                  {column.title} <span className="ml-2 text-[10px] font-bold opacity-40">({getColumnTasks(column.id).length})</span>
                 </h3>
               </div>
-              <div className="flex-1 rounded-xl bg-slate-100/50 dark:bg-slate-900/50 p-2 border border-slate-200/50 dark:border-slate-800/50 min-h-[400px]">
+              <div className="flex-1 rounded-2xl bg-slate-100/50 dark:bg-slate-900/40 p-3 border border-slate-200/60 dark:border-slate-800/60 min-h-[500px] shadow-inner">
                 <div className="space-y-3">
-                  {getColumnTasks(column.id).map((task) => (
-                    <motion.div
-                      key={task.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ y: -2 }}
-                      className="group cursor-pointer"
-                    >
-                      <Card className="border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-                        <CardContent className="p-4 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <Badge variant={task.priority === 'High' ? 'destructive' : 'secondary'} className="text-[10px] h-4">
-                              {task.priority}
-                            </Badge>
-                            <GripVertical className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                          <p className="text-sm font-semibold leading-snug">{task.title}</p>
-                          <div className="flex items-center justify-between pt-2">
-                            <div className="flex items-center gap-2">
-                              <Avatar className="h-6 w-6 border border-white dark:border-slate-950">
-                                <AvatarImage src={task.avatar} />
-                                <AvatarFallback className="text-[10px]">{task.user[0]}</AvatarFallback>
-                              </Avatar>
-                              <span className="text-[10px] font-medium text-muted-foreground">{task.user}</span>
+                  <AnimatePresence mode="popLayout">
+                    {getColumnTasks(column.id).map((task) => (
+                      <motion.div
+                        key={task.id}
+                        layout
+                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, x: 20 }}
+                        whileHover={{ y: -4 }}
+                        className="group cursor-pointer active:scale-95 transition-transform"
+                        onClick={() => moveTask(task.id)}
+                      >
+                        <Card className="border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-glow-lg hover:border-primary/30 bg-background/80 backdrop-blur-sm transition-all overflow-hidden relative">
+                          <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
+                          <CardContent className="p-4 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <Badge variant={task.priority === 'High' ? 'destructive' : 'secondary'} className="text-[9px] font-black h-4 px-1.5 uppercase tracking-tighter">
+                                {task.priority}
+                              </Badge>
+                              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span className="text-[9px] font-bold text-primary uppercase">Next</span>
+                                <ArrowRight className="h-3 w-3 text-primary" />
+                                <GripVertical className="h-3.5 w-3.5 text-muted-foreground/40" />
+                              </div>
                             </div>
-                            <span className="text-[10px] text-muted-foreground font-mono">#{task.id.split('-')[1]}</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
+                            <p className="text-sm font-bold leading-tight tracking-tight text-foreground group-hover:text-primary transition-colors">{task.title}</p>
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800/50">
+                              <div className="flex items-center gap-2">
+                                <Avatar className="h-6 w-6 border-2 border-background shadow-sm ring-1 ring-slate-100 dark:ring-slate-800">
+                                  <AvatarImage src={task.avatar} />
+                                  <AvatarFallback className="text-[10px] font-black bg-primary/5 text-primary">{task.user[0]}</AvatarFallback>
+                                </Avatar>
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{task.user}</span>
+                              </div>
+                              <span className="text-[9px] text-muted-foreground font-mono font-bold bg-secondary/50 px-1.5 py-0.5 rounded">#{task.id.split('-')[1]}</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                   {getColumnTasks(column.id).length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-12 text-muted-foreground/30 border-2 border-dashed rounded-xl border-slate-200 dark:border-slate-800">
-                      <p className="text-xs italic">Drop tasks here</p>
-                    </div>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col items-center justify-center py-20 text-muted-foreground/30 border-2 border-dashed rounded-2xl border-slate-200 dark:border-slate-800/60"
+                    >
+                      <Plus className="h-8 w-8 mb-2 opacity-20" />
+                      <p className="text-[10px] font-black uppercase tracking-widest">Awaiting Input</p>
+                    </motion.div>
                   )}
                 </div>
               </div>

@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileDown, Share2, Filter, Loader2, LineChart as ChartIcon } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 export function ReportsPage() {
   const [isExporting, setIsExporting] = useState(false);
   const handleExport = () => {
@@ -25,9 +25,9 @@ export function ReportsPage() {
             <Button variant="outline" className="flex items-center gap-2">
               <Filter className="h-4 w-4" /> Filters
             </Button>
-            <Button 
-              variant="default" 
-              className="flex items-center gap-2" 
+            <Button
+              variant="default"
+              className="flex items-center gap-2"
               onClick={handleExport}
               disabled={isExporting}
             >
@@ -43,12 +43,12 @@ export function ReportsPage() {
                 <ChartIcon className="h-4 w-4 text-primary" />
                 <CardTitle className="text-base font-semibold">Operational Efficiency Trend</CardTitle>
               </div>
-              <CardDescription>Aggregate team performance vs request volume (6-month period).</CardDescription>
+              <CardDescription>Aggregate team performance (%) vs request volume (6-month period).</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[350px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={REPORT_DATA}>
+                  <AreaChart data={REPORT_DATA} margin={{ left: -20, right: 10 }}>
                     <defs>
                       <linearGradient id="efficiencyGradient" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.1} />
@@ -56,38 +56,60 @@ export function ReportsPage() {
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                    <XAxis 
-                      dataKey="month" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} 
+                    <XAxis
+                      dataKey="month"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
                     />
-                    <YAxis 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} 
+                    <YAxis
+                      yAxisId="left"
+                      orientation="left"
+                      domain={[0, 100]}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fill: "hsl(var(--primary))", fontWeight: 700 }}
+                      unit="%"
+                    />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fill: "hsl(var(--chart-2))", fontWeight: 700 }}
                     />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "hsl(var(--background))",
                         borderColor: "hsl(var(--border))",
-                        borderRadius: "8px"
+                        borderRadius: "8px",
+                        fontSize: "12px"
                       }}
+                      formatter={(value: any, name: string) => [
+                        name === 'efficiency' ? `${value}%` : value,
+                        name === 'efficiency' ? 'Efficiency' : 'Volume'
+                      ]}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="efficiency" 
-                      stroke="hsl(var(--primary))" 
-                      strokeWidth={3} 
-                      fill="url(#efficiencyGradient)" 
+                    <Area
+                      yAxisId="left"
+                      type="monotone"
+                      dataKey="efficiency"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={3}
+                      fill="url(#efficiencyGradient)"
+                      name="efficiency"
+                      animationDuration={1000}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="volume" 
-                      stroke="hsl(var(--chart-2))" 
-                      strokeWidth={2} 
+                    <Area
+                      yAxisId="right"
+                      type="monotone"
+                      dataKey="volume"
+                      stroke="hsl(var(--chart-2))"
+                      strokeWidth={2}
                       strokeDasharray="5 5"
-                      fill="transparent" 
+                      fill="transparent"
+                      name="volume"
+                      animationDuration={1500}
                     />
                   </AreaChart>
                 </ResponsiveContainer>

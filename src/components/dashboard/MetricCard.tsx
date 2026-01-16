@@ -21,18 +21,22 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
   return (
     <div className="animate-in slide-in-from-bottom-2 fade-in duration-500 ease-out [animation-fill-mode:forwards]">
       <Card className="overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm group cursor-default">
-        <CardContent className="p-6">
+        <CardContent className="p-4 sm:p-6">
           <div className="flex items-center justify-between space-y-0 pb-3">
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">{title}</p>
-            <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20">
-              <Icon className="h-5 w-5 text-primary" />
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] truncate pr-2" title={title}>
+              {title}
+            </p>
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0">
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
           </div>
-          <div className="flex flex-col gap-1 mt-2">
-            <h2 className="text-3xl font-black tracking-tighter text-foreground tabular-nums drop-shadow-sm">{value}</h2>
-            <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-col gap-1 mt-1 sm:mt-2">
+            <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground tabular-nums drop-shadow-sm truncate">
+              {value}
+            </h2>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               <span className={cn(
-                "flex items-center text-[10px] font-black px-2 py-0.5 rounded border uppercase tracking-wider",
+                "flex items-center text-[9px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded border uppercase tracking-wider whitespace-nowrap",
                 trend === "up"
                   ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
                   : "bg-rose-600 text-white border-rose-500 shadow-sm"
@@ -40,8 +44,8 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
                 {trend === "up" ? <ArrowUpRight className="mr-0.5 h-3 w-3" /> : <ArrowDownRight className="mr-0.5 h-3 w-3" />}
                 {change}
               </span>
-              <span className="text-[9px] text-muted-foreground font-black uppercase tracking-widest opacity-60">
-                vs period baseline
+              <span className="text-[9px] text-muted-foreground font-black uppercase tracking-widest opacity-60 leading-none">
+                vs period
               </span>
             </div>
           </div>

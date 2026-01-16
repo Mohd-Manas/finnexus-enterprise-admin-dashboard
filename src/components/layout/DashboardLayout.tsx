@@ -5,6 +5,7 @@ import { Search, Bell, User as UserIcon, LogOut, Settings, UserPlus } from "luci
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,11 +62,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               />
             </div>
           </div>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-emerald-500 border-2 border-background" />
-            </Button>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-1 sm:gap-2 pr-1 border-r mr-1 border-slate-200 dark:border-slate-800">
+              <ThemeToggle className="relative top-0 right-0 h-9 w-9" />
+              <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors h-9 w-9">
+                <Bell className="h-4 w-4" />
+                <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-emerald-500 border border-background" />
+              </Button>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-xl p-0 overflow-hidden ring-offset-background transition-all hover:ring-2 hover:ring-primary/40 border border-slate-200 dark:border-slate-800 shadow-sm">

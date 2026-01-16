@@ -68,12 +68,12 @@ export function BackOfficeDashboard() {
                   </div>
                 ))}
               </div>
-              <Button 
-                variant="outline" 
-                className="w-full mt-6 text-xs"
+              <Button
+                variant="outline"
+                className="w-full mt-6 text-xs font-black"
                 onClick={() => toast.info("Accessing Risk Terminal...")}
               >
-                Access Risk Terminal
+                ACCESS RISK TERMINAL
               </Button>
             </CardContent>
           </Card>
@@ -81,49 +81,51 @@ export function BackOfficeDashboard() {
             <CardHeader>
               <CardTitle className="text-base font-semibold">Priority Support Tickets</CardTitle>
             </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ticket ID</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Assignee</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Action</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {BACKOFFICE_TICKETS.map((ticket) => (
-                    <TableRow key={ticket.id}>
-                      <TableCell className="font-mono text-xs">{ticket.id}</TableCell>
-                      <TableCell className="text-sm font-medium">{ticket.subject}</TableCell>
-                      <TableCell>
-                        <Badge variant={ticket.priority === 'High' ? 'destructive' : 'secondary'} className="text-[10px]">
-                          {ticket.priority}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Avatar className="h-6 w-6">
-                            <AvatarFallback className="text-[10px] font-bold">{ticket.assignee[0]}</AvatarFallback>
-                          </Avatar>
-                          <span className="text-xs">{ticket.assignee}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          {ticket.status === 'Open' ? <AlertCircle className="h-3 w-3 text-amber-500" /> : <Clock className="h-3 w-3" />}
-                          {ticket.status}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => handleTicketManage(ticket.id)}>Manage</Button>
-                      </TableCell>
+            <CardContent className="p-0 sm:p-6">
+              <div className="overflow-x-auto pb-2">
+                <Table className="min-w-[700px]">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ticket ID</TableHead>
+                      <TableHead>Subject</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Assignee</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Action</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {BACKOFFICE_TICKETS.map((ticket) => (
+                      <TableRow key={ticket.id}>
+                        <TableCell className="font-mono text-xs">{ticket.id}</TableCell>
+                        <TableCell className="text-sm font-medium">{ticket.subject}</TableCell>
+                        <TableCell>
+                          <Badge variant={ticket.priority === 'High' ? 'destructive' : 'secondary'} className="text-[10px]">
+                            {ticket.priority}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-6 w-6">
+                              <AvatarFallback className="text-[10px] font-bold">{ticket.assignee[0]}</AvatarFallback>
+                            </Avatar>
+                            <span className="text-xs whitespace-nowrap">{ticket.assignee}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap">
+                            {ticket.status === 'Open' ? <AlertCircle className="h-3 w-3 text-amber-500" /> : <Clock className="h-3 w-3" />}
+                            {ticket.status}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" onClick={() => handleTicketManage(ticket.id)}>Manage</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -136,35 +138,35 @@ export function BackOfficeDashboard() {
               <div className="space-y-4">
                 <AnimatePresence mode="popLayout">
                   {payouts.map((payout) => (
-                    <motion.div 
+                    <motion.div
                       key={payout.id}
                       layout
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, scale: 0.9 }}
-                      className="flex items-center justify-between p-3 border rounded-lg border-dashed bg-background/50"
+                      className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-xl border-dashed bg-background/50 gap-4"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center shrink-0">
                           <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold tracking-tight">{payout.amount}</p>
-                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">User: {payout.user} • {payout.method}</p>
+                          <p className="text-sm font-black tracking-tight">{payout.amount}</p>
+                          <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest leading-none mt-1">User: {payout.user} • {payout.method}</p>
                         </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="h-8 text-[10px] font-bold tracking-widest hover:bg-destructive/10 hover:text-destructive"
+                      <div className="flex gap-2 w-full sm:w-auto">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-9 flex-1 sm:flex-none text-[10px] font-black tracking-widest hover:bg-destructive/10 hover:text-destructive uppercase"
                           onClick={() => handlePayoutAction(payout.id, 'reject')}
                         >
                           REJECT
                         </Button>
-                        <Button 
-                          size="sm" 
-                          className="h-8 text-[10px] font-bold tracking-widest bg-emerald-600 hover:bg-emerald-700"
+                        <Button
+                          size="sm"
+                          className="h-9 flex-1 sm:flex-none text-[10px] font-black tracking-widest bg-emerald-600 hover:bg-emerald-700 uppercase"
                           onClick={() => handlePayoutAction(payout.id, 'approve')}
                         >
                           APPROVE
@@ -173,7 +175,7 @@ export function BackOfficeDashboard() {
                     </motion.div>
                   ))}
                   {payouts.length === 0 && (
-                    <div className="py-10 text-center text-muted-foreground/40 text-xs font-bold uppercase tracking-widest border border-dashed rounded-lg">
+                    <div className="py-12 text-center text-muted-foreground/40 text-xs font-black uppercase tracking-widest border border-dashed rounded-xl">
                       No pending authorizations
                     </div>
                   )}
@@ -186,26 +188,26 @@ export function BackOfficeDashboard() {
               <CardTitle className="text-base font-semibold">Quick Compliance Tasks</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div 
-                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+              <div
+                className="flex items-center justify-between p-4 bg-secondary/5 rounded-xl border border-transparent hover:border-primary/20 cursor-pointer transition-all"
                 onClick={() => handleTaskClick("Daily AML Scrub")}
               >
-                <p className="text-sm font-medium">Daily AML Scrub</p>
-                <Badge className="bg-emerald-500/10 text-emerald-600 border-none">COMPLETED</Badge>
+                <p className="text-sm font-bold tracking-tight">Daily AML Scrub</p>
+                <Badge className="bg-emerald-500/10 text-emerald-600 border-none font-black text-[10px]">COMPLETED</Badge>
               </div>
-              <div 
-                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+              <div
+                className="flex items-center justify-between p-4 bg-secondary/5 rounded-xl border border-transparent hover:border-primary/20 cursor-pointer transition-all"
                 onClick={() => handleTaskClick("Exposure Limit Review")}
               >
-                <p className="text-sm font-medium">Exposure Limit Review</p>
-                <Badge variant="outline" className="border-amber-500/50 text-amber-600">PENDING</Badge>
+                <p className="text-sm font-bold tracking-tight">Exposure Limit Review</p>
+                <Badge variant="outline" className="border-amber-500/50 text-amber-600 font-black text-[10px]">PENDING</Badge>
               </div>
-              <div 
-                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+              <div
+                className="flex items-center justify-between p-4 bg-secondary/5 rounded-xl border border-transparent hover:border-primary/20 cursor-pointer transition-all"
                 onClick={() => handleTaskClick("Quarterly Audit Report")}
               >
-                <p className="text-sm font-medium">Quarterly Audit Report</p>
-                <Badge variant="outline" className="border-primary/50 text-primary">IN PROGRESS</Badge>
+                <p className="text-sm font-bold tracking-tight">Quarterly Audit Report</p>
+                <Badge variant="outline" className="border-primary/50 text-primary font-black text-[10px]">IN PROGRESS</Badge>
               </div>
             </CardContent>
           </Card>

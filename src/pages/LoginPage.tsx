@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Lock, Mail, ShieldAlert, Loader2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,12 +13,17 @@ import { useAuth } from "@/hooks/use-auth";
 export function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { login } = useAuth();
+  const { login, isAuthenticated, isLoading } = useAuth();
   const [authenticating, setAuthenticating] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const controls = useAnimation();
   const inviteToken = searchParams.get('invite');
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/overview");
+    }
+  }, [isAuthenticated, isLoading, navigate]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
@@ -45,6 +50,7 @@ export function LoginPage() {
       setAuthenticating(false);
     }
   };
+  if (isLoading) return null;
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#020B4B] p-4 relative overflow-hidden font-sans">
       <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-blue-600/20 blur-[150px] rounded-full" />

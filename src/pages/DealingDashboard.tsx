@@ -42,8 +42,8 @@ export function DealingDashboard() {
           </div>
           <div className="flex gap-2">
             <Badge variant="outline" className="px-3 py-1 font-mono text-[10px] border-slate-200 dark:border-slate-800">SERVER: HK-CORE-01</Badge>
-            <Badge 
-              variant="default" 
+            <Badge
+              variant="default"
               className={cn(
                 "px-3 py-1 bg-emerald-500 cursor-pointer transition-all active:scale-95 flex items-center gap-1.5",
                 isRefreshing ? "opacity-50" : "animate-pulse"
@@ -69,54 +69,56 @@ export function DealingDashboard() {
           <CardHeader>
             <CardTitle className="text-base font-semibold tracking-tight">Active Market Symbols</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="border-slate-100 dark:border-slate-800">
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest">Symbol</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest">Volume (24h)</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest">Change</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-widest">Sentiment</TableHead>
-                  <TableHead className="text-right text-[10px] font-black uppercase tracking-widest">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {TOP_SYMBOLS.map((s) => (
-                  <TableRow key={s.symbol} className="hover:bg-muted/30 transition-colors border-slate-100 dark:border-slate-800">
-                    <TableCell className="font-bold tracking-tight">{s.symbol}</TableCell>
-                    <TableCell className="text-muted-foreground font-medium tabular-nums">{s.volume}</TableCell>
-                    <TableCell className={cn(
-                      "font-bold tabular-nums",
-                      s.change.startsWith("+") ? "text-emerald-500" : "text-rose-500"
-                    )}>
-                      {s.change}
-                    </TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary" 
-                        className={cn(
-                          "text-[10px] font-bold uppercase tracking-tight",
-                          s.status === "Bullish" && "bg-emerald-500/10 text-emerald-600 border-none",
-                          s.status === "Bearish" && "bg-rose-500/10 text-rose-600 border-none",
-                          s.status === "Volatile" && "bg-amber-500/10 text-amber-600 border-none",
-                          s.status === "Neutral" && "bg-slate-500/10 text-slate-600 border-none"
-                        )}
-                      >
-                        {s.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <button 
-                        className="text-xs font-black uppercase tracking-wider text-primary hover:underline"
-                        onClick={() => handleTradeDetails(s.symbol)}
-                      >
-                        Trade Details
-                      </button>
-                    </TableCell>
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto pb-2">
+              <Table className="min-w-[600px]">
+                <TableHeader>
+                  <TableRow className="border-slate-100 dark:border-slate-800">
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Symbol</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Volume (24h)</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Change</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest">Sentiment</TableHead>
+                    <TableHead className="text-right text-[10px] font-black uppercase tracking-widest">Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {TOP_SYMBOLS.map((s) => (
+                    <TableRow key={s.symbol} className="hover:bg-muted/30 transition-colors border-slate-100 dark:border-slate-800">
+                      <TableCell className="font-bold tracking-tight">{s.symbol}</TableCell>
+                      <TableCell className="text-muted-foreground font-medium tabular-nums">{s.volume}</TableCell>
+                      <TableCell className={cn(
+                        "font-bold tabular-nums",
+                        s.change.startsWith("+") ? "text-emerald-500" : "text-rose-500"
+                      )}>
+                        {s.change}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="secondary"
+                          className={cn(
+                            "text-[10px] font-bold uppercase tracking-tight",
+                            s.status === "Bullish" && "bg-emerald-500/10 text-emerald-600 border-none",
+                            s.status === "Bearish" && "bg-rose-500/10 text-rose-600 border-none",
+                            s.status === "Volatile" && "bg-amber-500/10 text-amber-600 border-none",
+                            s.status === "Neutral" && "bg-slate-500/10 text-slate-600 border-none"
+                          )}
+                        >
+                          {s.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <button
+                          className="text-xs font-black uppercase tracking-wider text-primary hover:underline"
+                          onClick={() => handleTradeDetails(s.symbol)}
+                        >
+                          Trade Details
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>

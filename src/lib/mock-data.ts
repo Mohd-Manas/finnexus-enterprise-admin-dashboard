@@ -1,6 +1,6 @@
 import { User } from "@shared/types";
-import { SYSTEM_STATS, PROJECT_TASKS } from "@shared/mock-data";
-export { SYSTEM_STATS, PROJECT_TASKS };
+import { SYSTEM_STATS, PROJECT_TASKS, TICKET_PRIORITY_STATS, COMPLIANCE_TYPE_STATS } from "@shared/mock-data";
+export { SYSTEM_STATS, PROJECT_TASKS, TICKET_PRIORITY_STATS, COMPLIANCE_TYPE_STATS };
 export const USER_PROFILE: User = {
   id: "u-99",
   name: "Alexander Vance",

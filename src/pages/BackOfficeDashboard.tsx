@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { TicketPriorityChart, ComplianceTypeChart } from "@/components/dashboard/charts/SupportAnalyticsCharts";
 export function BackOfficeDashboard() {
   const [payouts, setPayouts] = useState([
     { id: 1, amount: "$12,400.00", user: "#44092", method: "Bank Wire" },
@@ -39,7 +40,7 @@ export function BackOfficeDashboard() {
           <h1 className="text-3xl font-black tracking-tight">Operations Center</h1>
           <p className="text-muted-foreground text-sm font-medium">Compliance monitoring and back-office support workflows.</p>
         </div>
-        {/* Refined 3-column metric grid for optimal operational focus */}
+        {/* Refined 3-column metric grid */}
         <div className="grid gap-6 md:grid-cols-3">
           {BACKOFFICE_METRICS.map((metric, i) => (
             <MetricCard
@@ -51,6 +52,15 @@ export function BackOfficeDashboard() {
               icon={metric.icon}
             />
           ))}
+        </div>
+        {/* Phase 25: Operational Intelligence Analytics Row */}
+        <div className="grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <TicketPriorityChart />
+          </div>
+          <div className="lg:col-span-6">
+            <ComplianceTypeChart />
+          </div>
         </div>
         <div className="grid gap-8 lg:grid-cols-12">
           {/* Compliance Radar */}

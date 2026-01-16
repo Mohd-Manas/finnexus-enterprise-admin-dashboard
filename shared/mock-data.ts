@@ -23,3 +23,14 @@ export const PROJECT_TASKS = [
   { id: "task-4", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4" },
   { id: "task-5", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5" },
 ];
+export const TICKET_PRIORITY_STATS = [
+  { name: 'High', count: 24, fill: '#E11D48' }, // Rose-600
+  { name: 'Medium', count: 45, fill: '#F59E0B' }, // Amber-500
+  { name: 'Low', count: 112, fill: '#2563EB' }, // Blue-600
+];
+export const COMPLIANCE_TYPE_STATS = [
+  { category: 'AML', volume: 84 },
+  { category: 'KYC', volume: 156 },
+  { category: 'Risk', volume: 42 },
+  { category: 'Trade Audit', volume: 91 },
+];

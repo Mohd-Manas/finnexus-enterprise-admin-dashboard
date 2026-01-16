@@ -2,7 +2,6 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, LucideIcon, TrendingUp, TrendingDown, DollarSign, Users, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 const ICONS: Record<string, LucideIcon> = {
   DollarSign,
   Users,
@@ -20,12 +19,7 @@ interface MetricCardProps {
 export function MetricCard({ title, value, trend, change, icon }: MetricCardProps) {
   const Icon = ICONS[icon] || DollarSign;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-    >
+    <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 ease-out [animation-fill-mode:forwards] hover:-translate-y-1 hover:shadow-xl transition-transform duration-300 hover:scale-[1.02]">
       <Card className="overflow-hidden transition-all hover:shadow-xl border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm">
         <CardContent className="p-6">
           <div className="flex items-center justify-between space-y-0 pb-2">
@@ -51,6 +45,6 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }

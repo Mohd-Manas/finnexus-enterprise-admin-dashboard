@@ -3,40 +3,40 @@
 @tailwind utilities;
 @layer base {
   :root {
-    /* Core SkyLinks Navy Identity */
+    /* High-Contrast SkyLinks Pro Navy Identity */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    --primary: 233 95% 15%;
+    --primary: 233 92% 15%; /* #020B4B Refined */
     --primary-foreground: 210 40% 98%;
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 215.4 16.3% 44.9%;
     --border: 214.3 31.8% 91.4%;
-    --ring: 233 95% 15%;
+    --ring: 233 92% 15%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 224 64% 33%; /* #1E3A8A Secondary Blue */
+    --secondary-foreground: 210 40% 98%;
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 350 89% 60%; /* Rose-600 */
     --destructive-foreground: 210 40% 98%;
     --input: 214.3 31.8% 91.4%;
-    --chart-1: 233 95% 25%;
-    --chart-2: 217 91% 60%;
-    --chart-3: 200 90% 45%;
-    --chart-4: 190 90% 40%;
-    --chart-5: 230 100% 30%;
+    --chart-1: 233 92% 15%; /* Navy */
+    --chart-2: 142 71% 45%; /* Emerald-500 */
+    --chart-3: 224 64% 33%; /* Blue */
+    --chart-4: 199 89% 48%; /* Sky */
+    --chart-5: 142 72% 29%; /* Dark Emerald */
     --radius: 0.75rem;
     --sidebar-background: 210 40% 98%;
     --sidebar-foreground: 222.2 84% 4.9%;
-    --sidebar-primary: 233 95% 15%;
+    --sidebar-primary: 233 92% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 214.3 32% 91%;
-    --sidebar-accent-foreground: 233 95% 15%;
+    --sidebar-accent-foreground: 233 92% 15%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 233 95% 15%;
+    --sidebar-ring: 233 92% 15%;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -51,16 +51,16 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 224 64% 33%;
     --secondary-foreground: 210 40% 98%;
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 350 89% 45%;
     --destructive-foreground: 210 40% 98%;
     --input: 217.2 32.6% 17.5%;
     --chart-1: 217 91% 60%;
-    --chart-2: 233 95% 25%;
-    --chart-3: 200 90% 45%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 224 64% 33%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --sidebar-background: 222.2 84% 3.9%;
@@ -88,42 +88,20 @@
 }
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-gradient {
-    @apply btn text-white shadow-primary hover:shadow-glow hover:scale-[1.02] active:scale-[0.98];
-    background: linear-gradient(135deg, #020B4B 0%, #1E293B 100%);
+    @apply btn text-white shadow-primary hover:shadow-glow-lg hover:scale-[1.02] active:scale-[0.98];
+    background: linear-gradient(135deg, #020B4B 0%, #1E3A8A 100%);
+    border: 1px solid rgba(255,255,255,0.1);
   }
   .bg-gradient-primary {
-    background: linear-gradient(135deg, #020B4B 0%, #1E3A8A 50%, #172554 100%);
-  }
-  .bg-gradient-rainbow {
-    background: linear-gradient(135deg, #020B4B 0%, #1E40AF 25%, #3B82F6 50%, #60A5FA 100%);
-  }
-  .text-gradient {
-    background: linear-gradient(90deg, #020B4B 0%, #3B82F6 50%, #1E3A8A 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: linear-gradient(135deg, #020B4B 0%, #1E3A8A 50%, #0F172A 100%);
   }
   .glass {
     @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-glass;
   }
   .glass-dark {
-    @apply bg-slate-950/20 backdrop-blur-xl border border-white/5 shadow-glass;
-  }
-  .floating {
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(-4px); }
-    50% { transform: translateY(4px); }
-  }
-  .shimmer-bg {
-    @apply relative overflow-hidden;
-  }
-  .shimmer-bg::before {
-    @apply absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent;
-    content: '';
+    @apply bg-slate-950/40 backdrop-blur-xl border border-white/5 shadow-glass;
   }
 }

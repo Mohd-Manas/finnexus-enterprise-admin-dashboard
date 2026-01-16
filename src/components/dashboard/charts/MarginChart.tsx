@@ -4,15 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MARGIN_CHART_DATA } from "@/lib/mock-data";
 export function MarginChart() {
   const usedValue = MARGIN_CHART_DATA[0].value;
-  // Override fill with brand primary for "Used" state
+  // Professional palette refinement
   const themedData = MARGIN_CHART_DATA.map((entry, idx) => ({
     ...entry,
-    fill: idx === 0 ? "hsl(var(--primary))" : "hsl(var(--muted))"
+    fill: idx === 0 ? "#020B4B" : "#E2E8F0" // Navy vs High-Contrast Slate
   }));
   return (
-    <Card className="col-span-4 lg:col-span-1 border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm">
+    <Card className="col-span-4 lg:col-span-1 border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base font-semibold tracking-tight">Margin Utilization</CardTitle>
+        <CardTitle className="text-base font-bold tracking-tight">Margin Utilization</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
@@ -37,7 +37,7 @@ export function MarginChart() {
                 <Label
                   value={`${usedValue}%`}
                   position="center"
-                  className="fill-foreground text-4xl font-black tracking-tighter"
+                  className="fill-[#020B4B] dark:fill-white text-4xl font-black tracking-tighter"
                 />
               </Pie>
             </PieChart>
@@ -45,16 +45,16 @@ export function MarginChart() {
         </div>
         <div className="mt-6 flex flex-col gap-3">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground font-bold flex items-center gap-2 uppercase tracking-wide">
-              <span className="h-2.5 w-2.5 rounded-full bg-primary" /> Margin Used
+            <span className="text-muted-foreground font-black flex items-center gap-2 uppercase tracking-widest">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#020B4B]" /> Margin Used
             </span>
-            <span className="font-bold tabular-nums">$27.5M</span>
+            <span className="font-black tabular-nums">$27.5M</span>
           </div>
           <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground font-bold flex items-center gap-2 uppercase tracking-wide">
-              <span className="h-2.5 w-2.5 rounded-full bg-muted" /> Available
+            <span className="text-muted-foreground font-black flex items-center gap-2 uppercase tracking-widest">
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-200" /> Available
             </span>
-            <span className="font-bold tabular-nums">$15.3M</span>
+            <span className="font-black tabular-nums">$15.3M</span>
           </div>
         </div>
       </CardContent>

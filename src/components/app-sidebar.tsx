@@ -49,10 +49,10 @@ export function AppSidebar(): JSX.Element {
     <Sidebar variant="sidebar" collapsible="icon" className="border-r border-slate-200 dark:border-slate-800">
       <SidebarHeader className="h-16 flex items-center px-4 border-b">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <Hexagon className="h-5 w-5 text-primary-foreground fill-primary-foreground/20" />
+          <div className="h-8 w-8 rounded-lg bg-[#020B4B] flex items-center justify-center shadow-lg shadow-primary/20">
+            <Hexagon className="h-5 w-5 text-white fill-white/10" />
           </div>
-          <span className="text-sm font-black tracking-tighter text-foreground group-data-[collapsible=icon]:hidden uppercase">
+          <span className="text-xs font-black tracking-tighter text-foreground group-data-[collapsible=icon]:hidden uppercase">
             SkyLinks Capital
           </span>
         </div>
@@ -64,19 +64,19 @@ export function AppSidebar(): JSX.Element {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] px-4 mb-2 opacity-50">Platform</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.25em] px-4 mb-2 opacity-50 text-muted-foreground">Platform</SidebarGroupLabel>
           <SidebarMenu className="px-2">
             {platformRoutes.map((route) => (
               <SidebarMenuItem key={route.path}>
-                <SidebarMenuButton 
-                  asChild 
-                  isActive={location.pathname === route.path} 
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === route.path}
                   tooltip={route.name}
-                  className="rounded-xl h-10 data-[active=true]:bg-primary/5 data-[active=true]:text-primary"
+                  className="rounded-xl h-10 font-bold data-[active=true]:bg-primary/5 data-[active=true]:text-primary hover:bg-primary/10 transition-all border-l-2 border-transparent data-[active=true]:border-primary"
                 >
                   <Link to={route.path}>
                     <route.icon className="h-4 w-4" />
-                    <span className="font-bold">{route.name}</span>
+                    <span>{route.name}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -87,19 +87,19 @@ export function AppSidebar(): JSX.Element {
           <>
             <SidebarSeparator className="mx-4 my-2" />
             <SidebarGroup>
-              <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] px-4 mb-2 opacity-50">Operations</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.25em] px-4 mb-2 opacity-50 text-muted-foreground">Operations</SidebarGroupLabel>
               <SidebarMenu className="px-2">
                 {operationsRoutes.map((route) => (
                   <SidebarMenuItem key={route.path}>
-                    <SidebarMenuButton 
-                      asChild 
-                      isActive={location.pathname === route.path} 
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname === route.path}
                       tooltip={route.name}
-                      className="rounded-xl h-10 data-[active=true]:bg-primary/5 data-[active=true]:text-primary"
+                      className="rounded-xl h-10 font-bold data-[active=true]:bg-primary/5 data-[active=true]:text-primary hover:bg-primary/10 transition-all border-l-2 border-transparent data-[active=true]:border-primary"
                     >
                       <Link to={route.path}>
                         <route.icon className="h-4 w-4" />
-                        <span className="font-bold">{route.name}</span>
+                        <span>{route.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -112,7 +112,7 @@ export function AppSidebar(): JSX.Element {
       <SidebarFooter className="border-t p-4 space-y-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings" className="rounded-xl font-bold">
+            <SidebarMenuButton tooltip="Settings" className="rounded-xl font-black text-xs uppercase tracking-widest">
               <Settings className="h-4 w-4" />
               <span>Settings</span>
             </SidebarMenuButton>
@@ -120,7 +120,7 @@ export function AppSidebar(): JSX.Element {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Logout"
-              className="rounded-xl font-bold text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors"
+              className="rounded-xl font-black text-xs uppercase tracking-widest text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors"
               onClick={logout}
             >
               <LogOut className="h-4 w-4" />

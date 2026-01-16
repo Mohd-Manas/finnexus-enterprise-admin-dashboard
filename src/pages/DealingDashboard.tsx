@@ -34,7 +34,7 @@ export function DealingDashboard() {
   };
   return (
     <DashboardLayout>
-      <div className="space-y-12 animate-fade-in">
+      <div className="space-y-10 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
             <h1 className="text-3xl font-black tracking-tight">Dealing Desk</h1>
@@ -57,7 +57,7 @@ export function DealingDashboard() {
             </Badge>
           </div>
         </div>
-        <div className="grid gap-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-8">
+        <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-8">
           {DEALING_METRICS.map((metric, i) => (
             <MetricCard
               key={i}

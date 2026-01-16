@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Search, Bell, User as UserIcon, LogOut, Settings, UserPlus } from "lucide-react";
+import { Search, Bell, User as UserIcon, LogOut, Settings, UserPlus, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { ShareAccessDialog } from "@/components/ShareAccessDialog";
+import { cn } from "@/lib/utils";
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -52,12 +53,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <SidebarInset className="flex flex-col min-h-screen bg-slate-50/50 dark:bg-slate-950/50 relative">
         <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background/95 px-4 backdrop-blur-xl sm:px-6 shadow-sm">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-primary transition-colors h-9 w-9" />
+            <SidebarTrigger className="text-muted-foreground hover:text-primary transition-colors h-9 w-9" />
             <div className="relative hidden md:block w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search secure terminal..."
+                placeholder="Search SkyLinks Terminal..."
                 className="w-full bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 pl-10 focus-visible:ring-2 focus-visible:ring-primary h-9 rounded-xl text-xs font-bold"
               />
             </div>
@@ -118,6 +119,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <main className="flex-1 overflow-x-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
             {children}
+            {/* Standard micro-interaction for the "View Full Audit Log" button usually placed in children but layout-consistent */}
+            <div className="hidden">
+              <button className="group flex items-center gap-2 py-2 text-xs font-semibold text-primary hover:bg-primary/5 rounded-md transition-colors">
+                View Full Audit Log
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
           </div>
           {isAdmin && <ShareAccessDialog open={shareOpen} onOpenChange={setShareOpen} />}
         </main>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Lock, Mail, ShieldAlert, Loader2, ShieldCheck } from "lucide-react";
+import { Lock, Mail, ShieldAlert, Loader2, ShieldCheck, Hexagon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -27,21 +27,27 @@ export function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
+    // Guest or Admin validation
+    const isGuestCreds = email.toLowerCase() === "guest-node@skylinkscapital.com";
     const isAdmin = email.toLowerCase() === "admin@skylinkscapital.com" && password === "Admin@123";
     if (inviteToken) {
       await new Promise(r => setTimeout(r, 1200));
       login("guest-node@skylinkscapital.com", "guest");
-      toast.success("SkyLinks Terminal: Guest access authorized.");
+      toast.success("SkyLinks Terminal Authorized", {
+        description: "Guest node handshake complete."
+      });
       navigate("/overview");
     } else if (isAdmin) {
       await new Promise(r => setTimeout(r, 1000));
       login(email.toLowerCase(), "admin");
-      toast.success("Identity Verified. SkyLinks Terminal access granted.");
+      toast.success("Identity Verified", {
+        description: "SkyLinks Terminal access granted."
+      });
       navigate("/overview");
     } else {
       await new Promise(r => setTimeout(r, 500));
       toast.error("Security Authentication Failed", {
-        description: "The work email or security key provided does not match SkyLinks Capital records.",
+        description: "Access denied. Credentials do not match SkyLinks records.",
       });
       controls.start({
         x: [-10, 10, -10, 10, 0],
@@ -50,7 +56,22 @@ export function LoginPage() {
       setAuthenticating(false);
     }
   };
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-[#020B4B]">
+        <div className="flex flex-col items-center gap-8">
+          <div className="relative">
+            <div className="h-20 w-20 rounded-3xl bg-blue-900/30 border border-blue-500/30 animate-pulse shadow-2xl" />
+            <div className="absolute inset-0 h-20 w-20 rounded-3xl border-t-4 border-emerald-500 animate-spin" />
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <span className="text-[10px] text-emerald-400 font-black tracking-[0.6em] uppercase">Establishing Secure Node</span>
+            <span className="text-[9px] text-slate-400 font-mono tracking-widest uppercase">Initializing SkyLinks Identity Provider...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#020B4B] p-4 relative overflow-hidden font-sans">
       <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-blue-600/20 blur-[150px] rounded-full" />
@@ -62,7 +83,7 @@ export function LoginPage() {
             animate={{ scale: 1, opacity: 1 }}
             className="mb-4 overflow-hidden rounded-2xl border border-white/20 shadow-2xl bg-[#1E3A8A] p-4 flex items-center justify-center"
           >
-             <ShieldCheck className="h-10 w-10 text-white" />
+             <Hexagon className="h-10 w-10 text-white fill-white/10" />
           </motion.div>
           <h1 className="text-3xl font-black tracking-tighter text-white text-center">SKYLINKS CAPITAL</h1>
           {inviteToken ? (

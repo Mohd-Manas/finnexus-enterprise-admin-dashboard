@@ -10,6 +10,7 @@ import { AlertCircle, CheckCircle2, Clock, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 export function BackOfficeDashboard() {
   const [payouts, setPayouts] = useState([
     { id: 1, amount: "$12,400.00", user: "#44092", method: "Bank Wire" },
@@ -163,7 +164,7 @@ export function BackOfficeDashboard() {
                         <div>
                           <p className="text-lg font-black tracking-tight leading-none">{payout.amount}</p>
                           <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest leading-none mt-2">
-                            User: {payout.user} • {payout.method}
+                            User: {payout.user} ��� {payout.method}
                           </p>
                         </div>
                       </div>

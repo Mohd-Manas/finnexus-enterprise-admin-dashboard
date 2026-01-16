@@ -18,6 +18,16 @@ export const DASHBOARD_SUMMARY = [
   { title: "Margin Utilization", value: "64.2%", trend: "down" as const, change: "-2.1%", icon: "Zap" },
   { title: "Daily P&L", value: "+$124.5k", trend: "up" as const, change: "+18.3%", icon: "TrendingUp" },
 ];
+export const DEALING_METRICS = [
+  { title: "Total Equity", value: "$42.8M", trend: "up" as const, change: "+12.5%", icon: "DollarSign" },
+  { title: "Total Credit", value: "$184.2M", trend: "up" as const, change: "+4.3%", icon: "CreditCard" },
+  { title: "Total Floating PNL", value: "+$428.1k", trend: "up" as const, change: "+12.1%", icon: "TrendingUp" },
+  { title: "Total Margin", value: "$12.8M", trend: "down" as const, change: "-0.4%", icon: "Zap" },
+  { title: "Total Accounts", value: "8,432", trend: "up" as const, change: "+3.2%", icon: "Users" },
+  { title: "Total Groups", value: "124", trend: "up" as const, change: "+1.5%", icon: "Layers" },
+  { title: "Total Profit", value: "+$124.5k", trend: "up" as const, change: "+18.3%", icon: "BarChart3" },
+  { title: "Total Symbols", value: "150", trend: "down" as const, change: "-2.1%", icon: "Activity" },
+];
 export const MARKETING_CAMPAIGNS = [
   { id: "cmp-1", name: "Q2 Global Equity", status: "Active", spend: "$45,000", leads: 1240, roi: "3.2x", color: "bg-emerald-500" },
   { id: "cmp-2", name: "Crypto Onboarding", status: "Paused", spend: "$12,000", leads: 450, roi: "1.8x", color: "bg-amber-500" },

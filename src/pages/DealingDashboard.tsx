@@ -3,7 +3,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { PnLChart } from "@/components/dashboard/charts/PnLChart";
 import { MarginChart } from "@/components/dashboard/charts/MarginChart";
-import { TOP_SYMBOLS } from "@/lib/mock-data";
+import { TOP_SYMBOLS, DEALING_METRICS } from "@/lib/mock-data";
 import {
   Table,
   TableBody,
@@ -55,11 +55,17 @@ export function DealingDashboard() {
             </Badge>
           </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <MetricCard title="Gross Exposure" value="$184.2M" trend="up" change="+4.3%" icon="TrendingUp" />
-          <MetricCard title="Net P&L" value="+$428.1k" trend="up" change="+12.1%" icon="DollarSign" />
-          <MetricCard title="Maintenance Margin" value="$12.8M" trend="down" change="-0.4%" icon="Zap" />
-          <MetricCard title="Account Variance" value="0.08%" trend="down" change="-2.5%" icon="TrendingDown" />
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+          {DEALING_METRICS.map((metric, i) => (
+            <MetricCard 
+              key={i}
+              title={metric.title} 
+              value={metric.value} 
+              trend={metric.trend} 
+              change={metric.change} 
+              icon={metric.icon} 
+            />
+          ))}
         </div>
         <div className="grid gap-6 lg:grid-cols-4">
           <PnLChart />

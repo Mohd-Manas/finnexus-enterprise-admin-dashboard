@@ -25,24 +25,27 @@ import {
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
+interface NavRoute {
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  path: string;
+}
+const MarketingIcon = () => <Megaphone className="h-4 w-4" />;
 export function AppSidebar(): JSX.Element {
   const location = useLocation();
   const { user, logout } = useAuth();
   if (!user) return <Sidebar />;
   const isGuest = user.role === "guest";
-  const platformRoutes = [
+  const platformRoutes: NavRoute[] = [
     { name: "Overview", icon: LayoutDashboard, path: "/overview" },
     { name: "Dealing", icon: CandlestickChart, path: "/dealing" },
-    { name: "Marketing", icon: MarketingDashboardPlaceholder, path: "/marketing" },
+    { name: "Marketing", icon: MarketingIcon, path: "/marketing" },
   ];
-  // Using a small mapping because some routes are only for admins
-  const operationsRoutes = [
+  const operationsRoutes: NavRoute[] = [
     { name: "Back Office", icon: ShieldCheck, path: "/backoffice" },
     { name: "Tasks", icon: CheckSquare, path: "/tasks" },
     { name: "Reports", icon: BarChart3, path: "/reports" },
   ];
-  // Helper because we can't import icons inside mapping easily if they vary
-  function MarketingDashboardPlaceholder() { return <Megaphone className="h-4 w-4" />; }
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="h-16 flex items-center px-4 border-b">
@@ -50,8 +53,8 @@ export function AppSidebar(): JSX.Element {
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
             <Hexagon className="h-5 w-5 text-primary-foreground fill-primary-foreground/20" />
           </div>
-          <span className="text-lg font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
-            FinNexus {isGuest && <span className="text-[10px] font-normal text-muted-foreground ml-1">(GUEST)</span>}
+          <span className="text-sm font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
+            SkyLinks Capital {isGuest && <span className="text-[10px] font-normal text-muted-foreground ml-1">(GUEST)</span>}
           </span>
         </div>
         {isGuest && (
@@ -68,7 +71,7 @@ export function AppSidebar(): JSX.Element {
               <SidebarMenuItem key={route.path}>
                 <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
                   <Link to={route.path}>
-                    {typeof route.icon === 'function' ? <route.icon /> : <route.icon className="h-4 w-4" />}
+                    <route.icon className="h-4 w-4" />
                     <span>{route.name}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -106,8 +109,8 @@ export function AppSidebar(): JSX.Element {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton 
-              tooltip="Logout" 
+            <SidebarMenuButton
+              tooltip="Logout"
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
               onClick={logout}
             >

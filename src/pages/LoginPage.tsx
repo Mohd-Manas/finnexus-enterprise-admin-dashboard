@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Hexagon, Lock, Mail, ShieldAlert, Loader2, AlertCircle } from "lucide-react";
+import { Lock, Mail, ShieldAlert, Loader2, AlertCircle, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,7 +22,7 @@ export function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
-    // Credentials requirement: admin@skylinkscapital.com / Admin@123
+    // Strict validation: admin@skylinkscapital.com / Admin@123
     const isAdmin = email === "admin@skylinkscapital.com" && password === "Admin@123";
     if (inviteToken) {
       await new Promise(r => setTimeout(r, 1200));
@@ -32,7 +32,7 @@ export function LoginPage() {
     } else if (isAdmin) {
       await new Promise(r => setTimeout(r, 1000));
       login(email, "admin");
-      toast.success("Identity Verified. Terminal access granted.");
+      toast.success("Identity Verified. SkyLinks Terminal access granted.");
       navigate("/overview");
     } else {
       await new Promise(r => setTimeout(r, 500));
@@ -52,17 +52,21 @@ export function LoginPage() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
       <div className="w-full max-w-md animate-fade-in relative z-10">
         <div className="flex flex-col items-center gap-2 mb-8">
-          <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <Hexagon className="h-7 w-7 text-white fill-white/20" />
+          <div className="mb-4 overflow-hidden rounded-xl border border-border shadow-2xl">
+            <img 
+              src="https://placehold.co/120x120/0f172a/white?text=SkyLinks" 
+              alt="SkyLinks Capital Logo" 
+              className="h-20 w-20 object-cover"
+            />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">FinNexus</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">SkyLinks Capital Terminal</h1>
           {inviteToken ? (
              <Badge variant="outline" className="flex items-center gap-1.5 py-1 px-3 border-emerald-500/30 bg-emerald-500/5 text-emerald-600 font-bold uppercase tracking-widest text-[10px]">
                <ShieldAlert className="h-3 w-3" /> Guest Access Authorized
              </Badge>
           ) : (
-            <p className="text-muted-foreground text-center max-w-xs">
-              SkyLinks Capital Enterprise Terminal
+            <p className="text-muted-foreground text-center max-w-xs font-medium uppercase tracking-[0.2em] text-[10px]">
+              Enterprise Financial Core
             </p>
           )}
         </div>
@@ -96,7 +100,7 @@ export function LoginPage() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label htmlFor="password">Security Key</Label>
-                        <button type="button" className="text-xs text-primary hover:underline">Reset Node Key?</button>
+                        <button type="button" className="text-xs text-primary hover:underline font-medium">Reset Node Key?</button>
                       </div>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -111,17 +115,17 @@ export function LoginPage() {
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="remember" />
-                      <Label htmlFor="remember" className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Maintain persistent node connection
+                      <Checkbox id="trust" />
+                      <Label htmlFor="trust" className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        Trust this device for 30 days
                       </Label>
                     </div>
                   </>
                 ) : (
                   <div className="py-4 text-center space-y-4">
                     <div className="flex justify-center">
-                      <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                        <ShieldAlert className="h-6 w-6 text-emerald-600" />
+                      <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                        <ShieldCheck className="h-6 w-6 text-emerald-600" />
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -132,7 +136,7 @@ export function LoginPage() {
               </CardContent>
               <CardFooter className="flex flex-col gap-4">
                 <Button type="submit" disabled={authenticating} className="w-full btn-gradient py-6 text-lg">
-                  {authenticating ? <Loader2 className="h-5 w-5 animate-spin" /> : (inviteToken ? "Initialize Guest Link" : "Authorize Access")}
+                  {authenticating ? <Loader2 className="h-5 w-5 animate-spin" /> : "Authorize Access"}
                 </Button>
                 <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
                   <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" /> 256-bit AES</span>
@@ -143,8 +147,8 @@ export function LoginPage() {
           </Card>
         </motion.div>
         {!inviteToken && (
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Problems logging in? Contact the <span className="text-primary cursor-pointer hover:underline">Dealing Desk Security Team</span>
+          <p className="mt-6 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+            Authorized access only. All actions are audited.
           </p>
         )}
       </div>

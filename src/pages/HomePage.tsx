@@ -47,7 +47,7 @@ export function HomePage() {
             transition={{ delay: 0.3 }}
             className="text-4xl md:text-5xl font-display font-bold tracking-tighter"
           >
-            Fin<span className="text-gradient">Nexus</span> Terminal
+            SkyLinks Capital <span className="text-gradient">Terminal</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}

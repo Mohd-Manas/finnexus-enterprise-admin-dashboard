@@ -25,8 +25,8 @@ export function useAuth() {
     const sessionUser: User = {
       ...USER_PROFILE,
       id: role === 'guest' ? `guest-${crypto.randomUUID().slice(0, 8)}` : USER_PROFILE.id,
-      name: role === 'guest' ? `Guest User` : USER_PROFILE.name,
-      email: email,
+      name: role === 'guest' ? `Guest User` : "Alexander Vance",
+      email: role === 'admin' ? "a.vance@skylinkscapital.com" : email,
       role: role,
       status: 'active',
     };

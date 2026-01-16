@@ -51,7 +51,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search terminal..."
+                placeholder="Search SkyLinks terminal..."
                 className="w-full bg-secondary/50 pl-9 focus-visible:ring-primary"
               />
             </div>

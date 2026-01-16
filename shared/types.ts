@@ -8,6 +8,8 @@ export type UserStatus = "active" | "expired";
 export interface User {
   id: string;
   name: string;
+  email?: string;
+  avatar?: string;
   role?: UserRole;
   status?: UserStatus;
   expiresAt?: number; // epoch millis

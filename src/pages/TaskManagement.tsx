@@ -15,29 +15,41 @@ export function TaskManagement() {
     setTasks(prev => {
       const taskIndex = prev.findIndex(t => t.id === taskId);
       if (taskIndex === -1) return prev;
+      const task = prev[taskIndex];
+      // Prevent 'Done' tasks from cycling back to 'Backlog' automatically
+      if (task.column === 'done') {
+        toast.success("Task is already archived as completed.");
+        return prev;
+      }
       const newTasks = [...prev];
-      const task = newTasks[taskIndex];
       const currentColumnIndex = TASK_COLUMNS.findIndex(c => c.id === task.column);
       const nextColumnIndex = (currentColumnIndex + 1) % TASK_COLUMNS.length;
+      const destination = TASK_COLUMNS[nextColumnIndex];
       newTasks[taskIndex] = {
         ...task,
-        column: TASK_COLUMNS[nextColumnIndex].id
+        column: destination.id
       };
-      toast.info(`Task moved to ${TASK_COLUMNS[nextColumnIndex].title}`);
+      toast.info(`Task moved: ${TASK_COLUMNS[currentColumnIndex].title} �� ${destination.title}`, {
+        description: task.title
+      });
       return newTasks;
     });
   }, []);
   const addNewTask = () => {
+    const idNum = Math.floor(Math.random() * 10000);
     const newTask = {
-      id: `task-${Math.floor(Math.random() * 10000)}`,
+      id: `task-${idNum}`,
       title: "New Platform Audit Request",
       priority: "Medium" as const,
       column: "backlog",
       user: "Alex V.",
       avatar: "https://i.pravatar.cc/150?u=1"
     };
-    setTasks([newTask, ...tasks]);
-    toast.success("New task created in Backlog");
+    // Prepend for immediate visibility in backlog
+    setTasks(prev => [newTask, ...prev]);
+    toast.success("Security ticket initialized", {
+      description: `Task #${idNum} added to Backlog.`
+    });
   };
   const getColumnTasks = (columnId: string) => tasks.filter(t => t.column === columnId);
   return (
@@ -46,14 +58,14 @@ export function TaskManagement() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Task Force</h1>
-            <p className="text-muted-foreground">Collaborative project tracking and workload distribution.</p>
+            <p className="text-muted-foreground text-sm font-medium">Collaborative project tracking and workload distribution.</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
-              <Filter className="h-4 w-4" /> Filter
+            <Button variant="outline" size="sm" className="flex items-center gap-2 h-9 text-xs font-bold px-4">
+              <Filter className="h-3.5 w-3.5" /> Filter
             </Button>
-            <Button size="sm" className="btn-gradient flex items-center gap-2" onClick={addNewTask}>
-              <Plus className="h-4 w-4" /> New Task
+            <Button size="sm" className="btn-gradient flex items-center gap-2 h-9 text-xs font-bold px-4" onClick={addNewTask}>
+              <Plus className="h-3.5 w-3.5" /> New Task
             </Button>
           </div>
         </div>
@@ -66,8 +78,11 @@ export function TaskManagement() {
           {TASK_COLUMNS.map((column) => (
             <div key={column.id} className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-1">
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
-                  {column.title} <span className="ml-2 text-[10px] font-bold opacity-40">({getColumnTasks(column.id).length})</span>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+                  {column.title} 
+                  <span className="bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[9px] font-bold opacity-70">
+                    {getColumnTasks(column.id).length}
+                  </span>
                 </h3>
               </div>
               <div className="flex-1 rounded-2xl bg-slate-100/50 dark:bg-slate-900/40 p-3 border border-slate-200/60 dark:border-slate-800/60 min-h-[500px] shadow-inner">
@@ -81,7 +96,10 @@ export function TaskManagement() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, x: 20 }}
                         whileHover={{ y: -4 }}
-                        className="group cursor-pointer active:scale-95 transition-transform"
+                        className={cn(
+                          "group cursor-pointer active:scale-95 transition-transform",
+                          column.id === 'done' && "opacity-60 grayscale-[0.5] hover:grayscale-0 hover:opacity-100"
+                        )}
                         onClick={() => moveTask(task.id)}
                       >
                         <Card className="border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-glow-lg hover:border-primary/30 bg-background/80 backdrop-blur-sm transition-all overflow-hidden relative">
@@ -92,8 +110,8 @@ export function TaskManagement() {
                                 {task.priority}
                               </Badge>
                               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span className="text-[9px] font-bold text-primary uppercase">Next</span>
-                                <ArrowRight className="h-3 w-3 text-primary" />
+                                <span className="text-[9px] font-bold text-primary uppercase">{column.id === 'done' ? 'Archived' : 'Next'}</span>
+                                {column.id !== 'done' && <ArrowRight className="h-3 w-3 text-primary" />}
                                 <GripVertical className="h-3.5 w-3.5 text-muted-foreground/40" />
                               </div>
                             </div>
@@ -114,13 +132,12 @@ export function TaskManagement() {
                     ))}
                   </AnimatePresence>
                   {getColumnTasks(column.id).length === 0 && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="flex flex-col items-center justify-center py-20 text-muted-foreground/30 border-2 border-dashed rounded-2xl border-slate-200 dark:border-slate-800/60"
                     >
-                      <Plus className="h-8 w-8 mb-2 opacity-20" />
-                      <p className="text-[10px] font-black uppercase tracking-widest">Awaiting Input</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest">Queue Empty</p>
                     </motion.div>
                   )}
                 </div>

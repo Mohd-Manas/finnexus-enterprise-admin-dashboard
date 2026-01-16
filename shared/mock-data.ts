@@ -23,6 +23,17 @@ export const PROJECT_TASKS = [
   { id: "task-4", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4" },
   { id: "task-5", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5" },
 ];
+export const TASK_STATUS_STATS = [
+  { name: 'To Do', value: 35, fill: 'hsl(var(--muted-foreground))' },
+  { name: 'In Progress', value: 40, fill: '#1E3A8A' },
+  { name: 'Done', value: 25, fill: '#10B981' },
+];
+export const TEAM_WORKLOAD_STATS = [
+  { name: 'Alex V.', workload: 85 },
+  { name: 'Sarah L.', workload: 62 },
+  { name: 'Mike R.', workload: 78 },
+  { name: 'Maria G.', workload: 92 },
+];
 export const TICKET_PRIORITY_STATS = [
   { name: 'High', count: 24, fill: '#E11D48' }, // Rose-600
   { name: 'Medium', count: 45, fill: '#F59E0B' }, // Amber-500

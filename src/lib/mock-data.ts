@@ -2,7 +2,7 @@ import { User } from "@shared/types";
 export const USER_PROFILE: User = {
   id: "u-99",
   name: "Alexander Vance",
-  email: "a.vance@finnexus.enterprise",
+  email: "a.vance@skylinkscapital.com",
   role: "admin",
   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };

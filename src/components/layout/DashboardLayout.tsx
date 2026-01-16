@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Search, Bell, User as UserIcon, LogOut, Settings } from "lucide-react";
+import { Search, Bell, User as UserIcon, LogOut, Settings, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,14 +14,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { USER_PROFILE } from "@/lib/mock-data";
-import { UserPlus } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 import { ShareAccessDialog } from "@/components/ShareAccessDialog";
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const navigate = useNavigate();
   const [shareOpen, setShareOpen] = React.useState(false);
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+  if (isLoading || !isAuthenticated) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-slate-950">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div className="h-12 w-12 rounded-xl bg-primary/20 border border-primary/40" />
+          <span className="text-xs text-primary font-mono tracking-widest uppercase">Securing Session...</span>
+        </div>
+      </div>
+    );
+  }
+  const currentUser = user!;
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -46,20 +64,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                   <Avatar className="h-9 w-9 border border-border shadow-sm">
-                    <AvatarImage src={USER_PROFILE.avatar} alt={USER_PROFILE.name} />
-                    <AvatarFallback>{USER_PROFILE.name[0]}</AvatarFallback>
+                    <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
+                    <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{USER_PROFILE.name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{USER_PROFILE.email}</p>
+                    <p className="text-sm font-medium leading-none">{currentUser.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{currentUser.email}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {USER_PROFILE.role === "admin" && (
+                {currentUser.role === "admin" && (
                   <>
                     <DropdownMenuItem onClick={() => setShareOpen(true)} className="cursor-pointer font-medium text-primary focus:bg-primary/5">
                       <UserPlus className="mr-2 h-4 w-4" /> Share Access
@@ -74,7 +92,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <Settings className="mr-2 h-4 w-4" /> Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">
+                <DropdownMenuItem 
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                  onClick={logout}
+                >
                   <LogOut className="mr-2 h-4 w-4" /> Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -1,29 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Hexagon, Lock, Mail, ShieldAlert, Loader2 } from "lucide-react";
+import { Hexagon, Lock, Mail, ShieldAlert, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion, useAnimation } from "framer-motion";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 export function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [authenticating, setAuthenticating] = React.useState(false);
+  const { login } = useAuth();
+  const [authenticating, setAuthenticating] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const controls = useAnimation();
   const inviteToken = searchParams.get('invite');
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
-    // Simulate token validation or standard auth
-    if (inviteToken) {
-      console.log("Validating guest token:", inviteToken);
+    // Credentials requirement: admin@skylinkscapital.com / Admin@123
+    const isValid = email === "admin@skylinkscapital.com" && password === "Admin@123";
+    if (isValid || inviteToken) {
       await new Promise(r => setTimeout(r, 1000));
+      login(inviteToken ? `guest_${inviteToken.slice(0,4)}@guest.local` : email);
+      toast.success("Identity Verified. Terminal access granted.");
+      navigate("/overview");
     } else {
       await new Promise(r => setTimeout(r, 500));
+      toast.error("Invalid Credentials", {
+        description: "The security key or email provided does not match our records.",
+      });
+      controls.start({
+        x: [-10, 10, -10, 10, 0],
+        transition: { duration: 0.4 }
+      });
+      setAuthenticating(false);
     }
-    navigate("/");
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 relative overflow-hidden">
@@ -41,60 +57,91 @@ export function LoginPage() {
              </Badge>
           ) : (
             <p className="text-muted-foreground text-center max-w-xs">
-              Enter your credentials to access the enterprise terminal
+              SkyLinks Capital Enterprise Terminal
             </p>
           )}
         </div>
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none bg-background/80 backdrop-blur-sm">
-          <form onSubmit={handleLogin}>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-xl">{inviteToken ? "Collaborator Login" : "Welcome back"}</CardTitle>
-              <CardDescription>
-                {inviteToken ? "Temporary read-only session will be initiated" : "Secure biometric or password login required"}
-              </CardDescription>
-            </CardHeader>
-            {!inviteToken && (
+        <motion.div animate={controls}>
+          <Card className="border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none bg-background/80 backdrop-blur-sm">
+            <form onSubmit={handleLogin}>
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-xl">{inviteToken ? "Collaborator Login" : "Secure Authentication"}</CardTitle>
+                <CardDescription>
+                  {inviteToken ? "Temporary read-only session will be initiated" : "Enter enterprise credentials to access the core"}
+                </CardDescription>
+              </CardHeader>
               <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="email" type="email" placeholder="admin@finnexus.com" className="pl-10" required />
+                {!inviteToken ? (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Work Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="admin@skylinkscapital.com" 
+                          className="pl-10" 
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="password">Security Key</Label>
+                        <button type="button" className="text-xs text-primary hover:underline">Reset Node Key?</button>
+                      </div>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input 
+                          id="password" 
+                          type="password" 
+                          className="pl-10" 
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="remember" />
+                      <Label htmlFor="remember" className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        Maintain persistent node connection
+                      </Label>
+                    </div>
+                  </>
+                ) : (
+                  <div className="py-4 text-center space-y-4">
+                    <div className="flex justify-center">
+                      <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                        <ShieldAlert className="h-6 w-6 text-emerald-600" />
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Access granted via invitation. Terminal modules will be limited to read-only analytics.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+              <CardFooter className="flex flex-col gap-4">
+                <Button type="submit" disabled={authenticating} className="w-full btn-gradient py-6 text-lg">
+                  {authenticating ? <Loader2 className="h-5 w-5 animate-spin" /> : (inviteToken ? "Initialize Guest Link" : "Authorize Access")}
+                </Button>
+                <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
+                  <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" /> 256-bit AES</span>
+                  <span className="flex items-center gap-1"><ShieldAlert className="h-2.5 w-2.5" /> Audit Log Active</span>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Security Key</Label>
-                  <Link to="#" className="text-xs text-primary hover:underline">Forgot key?</Link>
-                </div>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="password" type="password" className="pl-10" required />
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember" className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Trust this device for 30 days
-                </Label>
-              </div>
-            </CardContent>
-            )}
-            {inviteToken && (
-               <CardContent className="py-8 text-center space-y-4">
-                 <div className="text-sm text-muted-foreground">You have been invited to view the FinNexus Terminal as a guest contributor. Access is restricted to analytics dashboards only.</div>
-               </CardContent>
-            )}
-            <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" disabled={authenticating} className="w-full btn-gradient py-6 text-lg">
-                {authenticating ? <Loader2 className="h-5 w-5 animate-spin" /> : (inviteToken ? "Enter as Guest" : "Authorize Access")}
-              </Button>
-              <div className="text-center text-xs text-muted-foreground">
-                Authorized access only. All actions are audited.
-              </div>
-            </CardFooter>
-          </form>
-        </Card>
+              </CardFooter>
+            </form>
+          </Card>
+        </motion.div>
+        {!inviteToken && (
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Problems logging in? Contact the <span className="text-primary cursor-pointer hover:underline">Dealing Desk Security Team</span>
+          </p>
+        )}
       </div>
     </div>
   );

@@ -24,20 +24,24 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     throw new Error(errorMessage);
   }
   const json = (await response.json()) as ApiResponse<T>;
-  // Distinguish between intentional null data and failure to return expected payload
+  // Check for success flag
   if (json.success === false) {
     throw new Error(json.error || 'Server rejected terminal request');
   }
-  // T might be nullable, so we check if success is true and if data key is present
-  if (json.data === undefined) {
-    throw new Error('API integrity violation: Success returned without data payload');
+  // Use 'in' operator to check for property existence rather than just value check
+  // This allows data to be null or empty string if that's a valid T
+  if (!('data' in json)) {
+    throw new Error('API Integrity Violation: Success response missing data payload');
   }
   return json.data as T;
 }
+/**
+ * Standardized POST helper with robust error handling.
+ */
 export async function post<T>(path: string, body: any, init?: RequestInit): Promise<T> {
-  return api<T>(path, { 
-    method: 'POST', 
-    body: JSON.stringify(body), 
-    ...init 
+  return api<T>(path, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    ...init
   });
 }

@@ -42,11 +42,13 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
       <Card className="overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm group cursor-default">
         <CardContent className="p-5 lg:p-6 xl:p-8">
           <div className="flex items-start justify-between pb-4 min-w-0">
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest leading-tight break-words flex-1">
+            {/* min-h keeps layout stable even if titles wrap differently */}
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest leading-tight break-words flex-1 min-h-[2.5rem]">
               {title}
             </p>
+            {/* shrink-0 ensures the icon container remains perfectly square */}
             <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0 ml-2 shadow-sm">
-              <Icon className="h-6 w-6 text-primary" />
+              <Icon className="h-6 w-6 text-primary shrink-0" />
             </div>
           </div>
           <div className="flex flex-col gap-1.5 mt-1">

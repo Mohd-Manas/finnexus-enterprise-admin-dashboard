@@ -57,7 +57,8 @@ export function DealingDashboard() {
             </Badge>
           </div>
         </div>
-        <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-8">
+        {/* Optimized high-density grid for 1280px container */}
+        <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-4">
           {DEALING_METRICS.map((metric, i) => (
             <MetricCard
               key={i}
@@ -95,7 +96,7 @@ export function DealingDashboard() {
                 </TableHeader>
                 <TableBody>
                   {TOP_SYMBOLS.map((s) => (
-                    <TableRow key={s.symbol} className="hover:bg-muted/30 transition-colors border-slate-100 dark:border-slate-800 group">
+                    <TableRow key={s.symbol} className="hover:bg-muted/30 transition-all duration-200 border-slate-100 dark:border-slate-800 group">
                       <TableCell className="font-bold tracking-tight px-6 py-5">{s.symbol}</TableCell>
                       <TableCell className="text-muted-foreground font-bold tabular-nums py-5">{s.volume}</TableCell>
                       <TableCell className={cn(

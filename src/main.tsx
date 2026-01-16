@@ -15,11 +15,19 @@ import { DashboardOverview } from '@/pages/DashboardOverview'
 import { DealingDashboard } from '@/pages/DealingDashboard'
 import { MarketingDashboard } from '@/pages/MarketingDashboard'
 import { BackOfficeDashboard } from '@/pages/BackOfficeDashboard'
+import { TaskManagement } from '@/pages/TaskManagement'
+import { ReportsPage } from '@/pages/ReportsPage'
 import { LoginPage } from '@/pages/LoginPage'
+import { HomePage } from '@/pages/HomePage'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <HomePage />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/overview",
     element: <DashboardOverview />,
     errorElement: <RouteErrorBoundary />,
   },
@@ -36,6 +44,16 @@ const router = createBrowserRouter([
   {
     path: "/backoffice",
     element: <BackOfficeDashboard />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/tasks",
+    element: <TaskManagement />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/reports",
+    element: <ReportsPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {

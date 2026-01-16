@@ -61,3 +61,31 @@ export const RECENT_ACTIVITIES = [
   { id: 3, type: "Trade", user: "Michael Chen", status: "High Vol", time: "1 hour ago" },
   { id: 4, type: "System", user: "Admin", status: "Update", time: "3 hours ago" },
 ];
+export const TASK_COLUMNS = [
+  { id: "backlog", title: "Backlog" },
+  { id: "todo", title: "To Do" },
+  { id: "in-progress", title: "In Progress" },
+  { id: "done", title: "Done" },
+];
+export const PROJECT_TASKS = [
+  { id: "task-1", title: "Risk Engine Audit", priority: "High", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1" },
+  { id: "task-2", title: "HFT Node Optimization", priority: "Medium", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2" },
+  { id: "task-3", title: "Compliance Report Q3", priority: "High", column: "backlog", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3" },
+  { id: "task-4", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4" },
+  { id: "task-5", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5" },
+];
+export const REPORT_DATA = [
+  { month: "Jan", efficiency: 78, volume: 4500 },
+  { month: "Feb", efficiency: 82, volume: 5200 },
+  { month: "Mar", efficiency: 85, volume: 4800 },
+  { month: "Apr", efficiency: 89, volume: 6100 },
+  { month: "May", efficiency: 94, volume: 5900 },
+  { month: "Jun", efficiency: 92, volume: 7200 },
+];
+export const SYSTEM_STATS = {
+  activeSessions: 1242,
+  serverLoad: "42%",
+  uptime: "99.998%",
+  lastDeployment: "2h ago",
+  apiLatency: "14ms",
+};

@@ -1,16 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  CandlestickChart, 
-  Megaphone, 
-  ShieldCheck, 
-  CheckSquare, 
-  BarChart3, 
+import {
+  LayoutDashboard,
+  CandlestickChart,
+  Megaphone,
+  ShieldCheck,
+  CheckSquare,
+  BarChart3,
   Settings,
   LogOut,
   Hexagon,
-  ShieldAlert
 } from "lucide-react";
 import {
   Sidebar,
@@ -24,22 +23,26 @@ import {
   SidebarMenuButton,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import { USER_PROFILE } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
 export function AppSidebar(): JSX.Element {
   const location = useLocation();
-  const isGuest = USER_PROFILE?.role === "guest";
+  const { user, logout } = useAuth();
+  if (!user) return <Sidebar />;
+  const isGuest = user.role === "guest";
   const platformRoutes = [
-    { name: "Overview", icon: LayoutDashboard, path: "/" },
+    { name: "Overview", icon: LayoutDashboard, path: "/overview" },
     { name: "Dealing", icon: CandlestickChart, path: "/dealing" },
-    { name: "Marketing", icon: Megaphone, path: "/marketing" },
+    { name: "Marketing", icon: MarketingDashboardPlaceholder, path: "/marketing" },
   ];
-  const operationsRoutes = isGuest ? [] : [
+  // Using a small mapping because some routes are only for admins
+  const operationsRoutes = [
     { name: "Back Office", icon: ShieldCheck, path: "/backoffice" },
     { name: "Tasks", icon: CheckSquare, path: "/tasks" },
     { name: "Reports", icon: BarChart3, path: "/reports" },
   ];
+  // Helper because we can't import icons inside mapping easily if they vary
+  function MarketingDashboardPlaceholder() { return <Megaphone className="h-4 w-4" />; }
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="h-16 flex items-center px-4 border-b">
@@ -65,7 +68,7 @@ export function AppSidebar(): JSX.Element {
               <SidebarMenuItem key={route.path}>
                 <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
                   <Link to={route.path}>
-                    <route.icon />
+                    {typeof route.icon === 'function' ? <route.icon /> : <route.icon className="h-4 w-4" />}
                     <span>{route.name}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -73,36 +76,42 @@ export function AppSidebar(): JSX.Element {
             ))}
           </SidebarMenu>
         </SidebarGroup>
-        <SidebarSeparator />
         {!isGuest && (
-        <SidebarGroup>
-          <SidebarGroupLabel>Operations</SidebarGroupLabel>
-          <SidebarMenu>
-            {operationsRoutes.map((route) => (
-              <SidebarMenuItem key={route.path}>
-                <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
-                  <Link to={route.path}>
-                    <route.icon />
-                    <span>{route.name}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+          <>
+            <SidebarSeparator />
+            <SidebarGroup>
+              <SidebarGroupLabel>Operations</SidebarGroupLabel>
+              <SidebarMenu>
+                {operationsRoutes.map((route) => (
+                  <SidebarMenuItem key={route.path}>
+                    <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
+                      <Link to={route.path}>
+                        <route.icon className="h-4 w-4" />
+                        <span>{route.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </>
         )}
       </SidebarContent>
       <SidebarFooter className="border-t p-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Settings">
-              <Settings />
+              <Settings className="h-4 w-4" />
               <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Logout" className="text-destructive hover:text-destructive">
-              <LogOut />
+            <SidebarMenuButton 
+              tooltip="Logout" 
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={logout}
+            >
+              <LogOut className="h-4 w-4" />
               <span>Log out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

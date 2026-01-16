@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Hexagon, Lock, Mail, ShieldAlert, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,10 +23,15 @@ export function LoginPage() {
     e.preventDefault();
     setAuthenticating(true);
     // Credentials requirement: admin@skylinkscapital.com / Admin@123
-    const isValid = email === "admin@skylinkscapital.com" && password === "Admin@123";
-    if (isValid || inviteToken) {
+    const isAdmin = email === "admin@skylinkscapital.com" && password === "Admin@123";
+    if (inviteToken) {
+      await new Promise(r => setTimeout(r, 1200));
+      login(`guest_${inviteToken.slice(0, 4)}@guest.local`, "guest");
+      toast.success("Guest access authorized. Welcome to the terminal.");
+      navigate("/overview");
+    } else if (isAdmin) {
       await new Promise(r => setTimeout(r, 1000));
-      login(inviteToken ? `guest_${inviteToken.slice(0,4)}@guest.local` : email);
+      login(email, "admin");
       toast.success("Identity Verified. Terminal access granted.");
       navigate("/overview");
     } else {
@@ -77,14 +82,14 @@ export function LoginPage() {
                       <Label htmlFor="email">Work Email</Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="email" 
-                          type="email" 
-                          placeholder="admin@skylinkscapital.com" 
-                          className="pl-10" 
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="admin@skylinkscapital.com"
+                          className="pl-10"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          required 
+                          required
                         />
                       </div>
                     </div>
@@ -95,13 +100,13 @@ export function LoginPage() {
                       </div>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="password" 
-                          type="password" 
-                          className="pl-10" 
+                        <Input
+                          id="password"
+                          type="password"
+                          className="pl-10"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          required 
+                          required
                         />
                       </div>
                     </div>

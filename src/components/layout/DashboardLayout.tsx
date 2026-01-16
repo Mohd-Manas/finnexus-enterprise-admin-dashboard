@@ -39,6 +39,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     );
   }
   const currentUser = user!;
+  const isAdmin = currentUser.role === "admin";
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -77,7 +78,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {currentUser.role === "admin" && (
+                {isAdmin && (
                   <>
                     <DropdownMenuItem onClick={() => setShareOpen(true)} className="cursor-pointer font-medium text-primary focus:bg-primary/5">
                       <UserPlus className="mr-2 h-4 w-4" /> Share Access
@@ -92,7 +93,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <Settings className="mr-2 h-4 w-4" /> Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive"
                   onClick={logout}
                 >
@@ -106,7 +107,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
             {children}
           </div>
-          <ShareAccessDialog open={shareOpen} onOpenChange={setShareOpen} />
+          {isAdmin && <ShareAccessDialog open={shareOpen} onOpenChange={setShareOpen} />}
         </main>
       </SidebarInset>
     </SidebarProvider>

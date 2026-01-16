@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User } from '@shared/types';
+import { User, UserRole } from '@shared/types';
 import { USER_PROFILE } from '@/lib/mock-data';
 const AUTH_KEY = 'finnexus_auth_session';
 export function useAuth() {
@@ -21,11 +21,14 @@ export function useAuth() {
     }
     setIsLoading(false);
   }, []);
-  const login = useCallback((email: string) => {
+  const login = useCallback((email: string, role: UserRole = 'admin') => {
     const sessionUser: User = {
       ...USER_PROFILE,
+      id: role === 'guest' ? `guest-${crypto.randomUUID().slice(0, 8)}` : USER_PROFILE.id,
+      name: role === 'guest' ? `Guest User` : USER_PROFILE.name,
       email: email,
-      role: 'admin',
+      role: role,
+      status: 'active',
     };
     localStorage.setItem(AUTH_KEY, JSON.stringify(sessionUser));
     setUser(sessionUser);

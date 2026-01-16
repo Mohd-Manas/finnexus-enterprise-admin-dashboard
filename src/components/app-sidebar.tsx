@@ -30,7 +30,6 @@ interface NavRoute {
   icon: React.ComponentType<{ className?: string }>;
   path: string;
 }
-const MarketingIcon = () => <Megaphone className="h-4 w-4" />;
 export function AppSidebar(): JSX.Element {
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -39,7 +38,7 @@ export function AppSidebar(): JSX.Element {
   const platformRoutes: NavRoute[] = [
     { name: "Overview", icon: LayoutDashboard, path: "/overview" },
     { name: "Dealing", icon: CandlestickChart, path: "/dealing" },
-    { name: "Marketing", icon: MarketingIcon, path: "/marketing" },
+    { name: "Marketing", icon: Megaphone, path: "/marketing" },
   ];
   const operationsRoutes: NavRoute[] = [
     { name: "Back Office", icon: ShieldCheck, path: "/backoffice" },
@@ -47,32 +46,37 @@ export function AppSidebar(): JSX.Element {
     { name: "Reports", icon: BarChart3, path: "/reports" },
   ];
   return (
-    <Sidebar variant="sidebar" collapsible="icon">
+    <Sidebar variant="sidebar" collapsible="icon" className="border-r border-slate-200 dark:border-slate-800">
       <SidebarHeader className="h-16 flex items-center px-4 border-b">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
             <Hexagon className="h-5 w-5 text-primary-foreground fill-primary-foreground/20" />
           </div>
-          <span className="text-sm font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
-            SkyLinks Capital {isGuest && <span className="text-[10px] font-normal text-muted-foreground ml-1">(GUEST)</span>}
+          <span className="text-sm font-black tracking-tighter text-foreground group-data-[collapsible=icon]:hidden uppercase">
+            SkyLinks Capital
           </span>
         </div>
         {isGuest && (
           <div className="absolute right-4 top-1/2 -translate-y-1/2 group-data-[collapsible=icon]:hidden">
-            <Badge variant="outline" className="h-5 px-1.5 text-[9px] border-primary/20 text-primary uppercase font-bold">Limited</Badge>
+            <Badge variant="outline" className="h-5 px-1.5 text-[8px] border-primary/20 text-primary uppercase font-black bg-primary/5">Limited</Badge>
           </div>
         )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] px-4 mb-2 opacity-50">Platform</SidebarGroupLabel>
+          <SidebarMenu className="px-2">
             {platformRoutes.map((route) => (
               <SidebarMenuItem key={route.path}>
-                <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
+                <SidebarMenuButton 
+                  asChild 
+                  isActive={location.pathname === route.path} 
+                  tooltip={route.name}
+                  className="rounded-xl h-10 data-[active=true]:bg-primary/5 data-[active=true]:text-primary"
+                >
                   <Link to={route.path}>
                     <route.icon className="h-4 w-4" />
-                    <span>{route.name}</span>
+                    <span className="font-bold">{route.name}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -81,16 +85,21 @@ export function AppSidebar(): JSX.Element {
         </SidebarGroup>
         {!isGuest && (
           <>
-            <SidebarSeparator />
+            <SidebarSeparator className="mx-4 my-2" />
             <SidebarGroup>
-              <SidebarGroupLabel>Operations</SidebarGroupLabel>
-              <SidebarMenu>
+              <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] px-4 mb-2 opacity-50">Operations</SidebarGroupLabel>
+              <SidebarMenu className="px-2">
                 {operationsRoutes.map((route) => (
                   <SidebarMenuItem key={route.path}>
-                    <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
+                    <SidebarMenuButton 
+                      asChild 
+                      isActive={location.pathname === route.path} 
+                      tooltip={route.name}
+                      className="rounded-xl h-10 data-[active=true]:bg-primary/5 data-[active=true]:text-primary"
+                    >
                       <Link to={route.path}>
                         <route.icon className="h-4 w-4" />
-                        <span>{route.name}</span>
+                        <span className="font-bold">{route.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -100,10 +109,10 @@ export function AppSidebar(): JSX.Element {
           </>
         )}
       </SidebarContent>
-      <SidebarFooter className="border-t p-2">
+      <SidebarFooter className="border-t p-4 space-y-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
+            <SidebarMenuButton tooltip="Settings" className="rounded-xl font-bold">
               <Settings className="h-4 w-4" />
               <span>Settings</span>
             </SidebarMenuButton>
@@ -111,7 +120,7 @@ export function AppSidebar(): JSX.Element {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Logout"
-              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              className="rounded-xl font-bold text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors"
               onClick={logout}
             >
               <LogOut className="h-4 w-4" />

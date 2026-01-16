@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { BACKOFFICE_TICKETS, COMPLIANCE_ALERTS } from "@/lib/mock-data";
@@ -8,7 +8,29 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AlertCircle, CheckCircle2, Clock, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 export function BackOfficeDashboard() {
+  const [payouts, setPayouts] = useState([
+    { id: 1, amount: "$12,400.00", user: "#44092", method: "Bank Wire" },
+    { id: 2, amount: "$8,150.00", user: "#39201", method: "Crypto (USDT)" },
+    { id: 3, amount: "$2,900.00", user: "#45112", method: "SEPA" },
+  ]);
+  const handlePayoutAction = (id: number, action: 'approve' | 'reject') => {
+    const amount = payouts.find(p => p.id === id)?.amount;
+    setPayouts(prev => prev.filter(p => p.id !== id));
+    if (action === 'approve') {
+      toast.success(`Payout of ${amount} authorized successfully.`);
+    } else {
+      toast.error(`Payout request ${id} has been rejected.`);
+    }
+  };
+  const handleTicketManage = (ticketId: string) => {
+    toast.info(`Opening terminal for ticket ${ticketId}...`);
+  };
+  const handleTaskClick = (taskName: string) => {
+    toast.success(`Task "${taskName}" status updated.`);
+  };
   return (
     <DashboardLayout>
       <div className="space-y-8 animate-fade-in">
@@ -46,7 +68,13 @@ export function BackOfficeDashboard() {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-6 text-xs">Access Risk Terminal</Button>
+              <Button 
+                variant="outline" 
+                className="w-full mt-6 text-xs"
+                onClick={() => toast.info("Accessing Risk Terminal...")}
+              >
+                Access Risk Terminal
+              </Button>
             </CardContent>
           </Card>
           <Card className="lg:col-span-8 border-slate-200 dark:border-slate-800">
@@ -78,7 +106,7 @@ export function BackOfficeDashboard() {
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Avatar className="h-6 w-6">
-                            <AvatarFallback className="text-[10px]">{ticket.assignee[0]}</AvatarFallback>
+                            <AvatarFallback className="text-[10px] font-bold">{ticket.assignee[0]}</AvatarFallback>
                           </Avatar>
                           <span className="text-xs">{ticket.assignee}</span>
                         </div>
@@ -90,7 +118,7 @@ export function BackOfficeDashboard() {
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">Manage</Button>
+                        <Button variant="ghost" size="sm" onClick={() => handleTicketManage(ticket.id)}>Manage</Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -106,23 +134,50 @@ export function BackOfficeDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center justify-between p-3 border rounded-lg border-dashed">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                <AnimatePresence mode="popLayout">
+                  {payouts.map((payout) => (
+                    <motion.div 
+                      key={payout.id}
+                      layout
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="flex items-center justify-between p-3 border rounded-lg border-dashed bg-background/50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center">
+                          <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold tracking-tight">{payout.amount}</p>
+                          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">User: {payout.user} • {payout.method}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold">$12,400.00</p>
-                        <p className="text-xs text-muted-foreground">User ID: #44092 - Bank Wire</p>
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="h-8 text-[10px] font-bold tracking-widest hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() => handlePayoutAction(payout.id, 'reject')}
+                        >
+                          REJECT
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          className="h-8 text-[10px] font-bold tracking-widest bg-emerald-600 hover:bg-emerald-700"
+                          onClick={() => handlePayoutAction(payout.id, 'approve')}
+                        >
+                          APPROVE
+                        </Button>
                       </div>
+                    </motion.div>
+                  ))}
+                  {payouts.length === 0 && (
+                    <div className="py-10 text-center text-muted-foreground/40 text-xs font-bold uppercase tracking-widest border border-dashed rounded-lg">
+                      No pending authorizations
                     </div>
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="h-8 text-[10px]">REJECT</Button>
-                      <Button size="sm" className="h-8 text-[10px] bg-emerald-600 hover:bg-emerald-700">APPROVE</Button>
-                    </div>
-                  </div>
-                ))}
+                  )}
+                </AnimatePresence>
               </div>
             </CardContent>
           </Card>
@@ -131,17 +186,26 @@ export function BackOfficeDashboard() {
               <CardTitle className="text-base font-semibold">Quick Compliance Tasks</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+                onClick={() => handleTaskClick("Daily AML Scrub")}
+              >
                 <p className="text-sm font-medium">Daily AML Scrub</p>
-                <Badge>COMPLETED</Badge>
+                <Badge className="bg-emerald-500/10 text-emerald-600 border-none">COMPLETED</Badge>
               </div>
-              <div className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+                onClick={() => handleTaskClick("Exposure Limit Review")}
+              >
                 <p className="text-sm font-medium">Exposure Limit Review</p>
-                <Badge variant="outline">PENDING</Badge>
+                <Badge variant="outline" className="border-amber-500/50 text-amber-600">PENDING</Badge>
               </div>
-              <div className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+                onClick={() => handleTaskClick("Quarterly Audit Report")}
+              >
                 <p className="text-sm font-medium">Quarterly Audit Report</p>
-                <Badge variant="outline">IN PROGRESS</Badge>
+                <Badge variant="outline" className="border-primary/50 text-primary">IN PROGRESS</Badge>
               </div>
             </CardContent>
           </Card>

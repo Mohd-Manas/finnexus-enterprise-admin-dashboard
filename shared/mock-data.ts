@@ -16,12 +16,34 @@ export const SYSTEM_STATS = {
   lastDeployment: "2h ago",
   apiLatency: "14ms",
 };
-export const PROJECT_TASKS = [
-  { id: "task-1", title: "Risk Engine Audit", priority: "High", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1" },
-  { id: "task-2", title: "HFT Node Optimization", priority: "Medium", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2" },
-  { id: "task-3", title: "Compliance Report Q3", priority: "High", column: "backlog", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3" },
-  { id: "task-4", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4" },
-  { id: "task-5", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5" },
+export interface Task {
+  id: string;
+  title: string;
+  priority: "High" | "Medium" | "Low";
+  column: "backlog" | "todo" | "in-progress" | "done";
+  user: "Alex V." | "Sarah L." | "Mike R." | "Maria G.";
+  avatar: string;
+  description?: string;
+}
+export const PROJECT_TASKS: Task[] = [
+  { id: "SKL-101", title: "Risk Engine Audit", priority: "High", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1", description: "Comprehensive audit of the real-time risk mitigation layer." },
+  { id: "SKL-102", title: "HFT Node Optimization", priority: "Medium", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2", description: "Latency reduction for Hong Kong core trading nodes." },
+  { id: "SKL-103", title: "Compliance Report Q3", priority: "High", column: "backlog", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3", description: "Regulatory filing preparation for regional authorities." },
+  { id: "SKL-104", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4", description: "Standardizing endpoint schemas for institutional clients." },
+  { id: "SKL-105", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5", description: "Fixing websocket dropped frames in the XAUUSD stream." },
+  { id: "SKL-106", title: "Margin Call Protocol Update", priority: "High", column: "todo", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1", description: "Revamping automatic liquidation thresholds for high-leverage accounts." },
+  { id: "SKL-107", title: "Lp Connectivity Debug", priority: "Medium", column: "in-progress", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2", description: "Investigating 500ms latency spikes with Liquidity Provider B." },
+  { id: "SKL-108", title: "Quarterly Compliance Audit", priority: "High", column: "backlog", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5", description: "Internal review of AML flagging accuracy." },
+  { id: "SKL-109", title: "CRM Integration Sync", priority: "Low", column: "done", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3", description: "Syncing lead conversion data with the central marketing hub." },
+  { id: "SKL-110", title: "Shadow Banking Stress Test", priority: "High", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1", description: "Simulating liquidity crunches in sub-custodian accounts." },
+  { id: "SKL-111", title: "Frontend Dashboard Polish", priority: "Low", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2", description: "Improving chart contrast for terminal accessibility compliance." },
+  { id: "SKL-112", title: "Database Sharding Phase 2", priority: "Medium", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5", description: "Migrating transaction logs to regional clusters." },
+  { id: "SKL-113", title: "OAuth2 Provider Security Patch", priority: "High", column: "done", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3", description: "Critical patch for session hijacking vulnerability." },
+  { id: "SKL-114", title: "Mobile Push Notification Revamp", priority: "Medium", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2", description: "Adding actionable alerts for margin calls." },
+  { id: "SKL-115", title: "Symbol Mapping Refactor", priority: "Low", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1", description: "Standardizing ISIN/CUSIP identifiers across all feeds." },
+  { id: "SKL-116", title: "Withdrawal Gateway Testing", priority: "High", column: "todo", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5", description: "Validating SEPA Instant transactions." },
+  { id: "SKL-117", title: "Trade History Export Fix", priority: "Low", column: "done", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3", description: "Handling large CSV timeouts in the reporting module." },
+  { id: "SKL-118", title: "Internal KYC Bot Audit", priority: "Medium", column: "backlog", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2", description: "Reviewing AI classification of expired documents." },
 ];
 export const TASK_STATUS_STATS = [
   { name: 'To Do', value: 35, fill: 'hsl(var(--muted-foreground))' },

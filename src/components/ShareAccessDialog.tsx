@@ -8,7 +8,6 @@ import { Copy, Check, Loader2, QrCode, ShieldCheck, Link as LinkIcon } from "luc
 import { motion, AnimatePresence } from "framer-motion";
 import { post } from "@/lib/api-client";
 import { InviteResponse } from "@shared/types";
-import { Badge } from "@/components/ui/badge";
 interface ShareAccessDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -37,7 +36,7 @@ export function ShareAccessDialog({ open, onOpenChange }: ShareAccessDialogProps
       setTimeout(() => setCopied(false), 2000);
     }
   };
-  const qrUrl = invite
+  const qrUrl = invite 
     ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(invite.inviteUrl)}`
     : null;
   return (
@@ -70,8 +69,8 @@ export function ShareAccessDialog({ open, onOpenChange }: ShareAccessDialogProps
                     <p className="font-semibold">Generate Invite Token</p>
                     <p className="text-xs text-muted-foreground">Link expires in 24 hours. Read-only access.</p>
                   </div>
-                  <Button
-                    onClick={generateLink}
+                  <Button 
+                    onClick={generateLink} 
                     disabled={loading}
                     className="w-full btn-gradient"
                   >
@@ -119,7 +118,7 @@ export function ShareAccessDialog({ open, onOpenChange }: ShareAccessDialogProps
         </div>
         <DialogFooter className="sm:justify-center border-t pt-4">
           <p className="text-[10px] text-center text-muted-foreground italic">
-            Note: Guests can only view Platform Overview, Dealing, and Marketing modules.
+            Note: Guests can only view Platform Overview, Dealing, and Marketing modules. 
             All actions are logged under the generator's audit ID.
           </p>
         </DialogFooter>
@@ -127,3 +126,4 @@ export function ShareAccessDialog({ open, onOpenChange }: ShareAccessDialogProps
     </Dialog>
   );
 }
+import { Badge } from "@/components/ui/badge";

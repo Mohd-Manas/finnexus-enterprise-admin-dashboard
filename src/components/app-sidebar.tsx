@@ -7,9 +7,10 @@ import {
   ShieldCheck, 
   CheckSquare, 
   BarChart3, 
-  Settings, 
+  Settings,
   LogOut,
-  Hexagon
+  Hexagon,
+  ShieldAlert
 } from "lucide-react";
 import {
   Sidebar,
@@ -24,14 +25,17 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { USER_PROFILE } from "@/lib/mock-data";
+import { Badge } from "@/components/ui/badge";
 export function AppSidebar(): JSX.Element {
   const location = useLocation();
+  const isGuest = USER_PROFILE?.role === "guest";
   const platformRoutes = [
     { name: "Overview", icon: LayoutDashboard, path: "/" },
     { name: "Dealing", icon: CandlestickChart, path: "/dealing" },
     { name: "Marketing", icon: Megaphone, path: "/marketing" },
   ];
-  const operationsRoutes = [
+  const operationsRoutes = isGuest ? [] : [
     { name: "Back Office", icon: ShieldCheck, path: "/backoffice" },
     { name: "Tasks", icon: CheckSquare, path: "/tasks" },
     { name: "Reports", icon: BarChart3, path: "/reports" },
@@ -44,9 +48,14 @@ export function AppSidebar(): JSX.Element {
             <Hexagon className="h-5 w-5 text-primary-foreground fill-primary-foreground/20" />
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
-            FinNexus
+            FinNexus {isGuest && <span className="text-[10px] font-normal text-muted-foreground ml-1">(GUEST)</span>}
           </span>
         </div>
+        {isGuest && (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 group-data-[collapsible=icon]:hidden">
+            <Badge variant="outline" className="h-5 px-1.5 text-[9px] border-primary/20 text-primary uppercase font-bold">Limited</Badge>
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -65,6 +74,7 @@ export function AppSidebar(): JSX.Element {
           </SidebarMenu>
         </SidebarGroup>
         <SidebarSeparator />
+        {!isGuest && (
         <SidebarGroup>
           <SidebarGroupLabel>Operations</SidebarGroupLabel>
           <SidebarMenu>
@@ -80,6 +90,7 @@ export function AppSidebar(): JSX.Element {
             ))}
           </SidebarMenu>
         </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter className="border-t p-2">
         <SidebarMenu>

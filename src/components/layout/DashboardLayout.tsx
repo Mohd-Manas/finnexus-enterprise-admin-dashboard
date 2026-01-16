@@ -14,14 +14,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { USER_PROFILE } from "@/lib/mock-data";
+import { UserPlus } from "lucide-react";
+import { ShareAccessDialog } from "@/components/ShareAccessDialog";
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [shareOpen, setShareOpen] = React.useState(false);
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="flex flex-col min-h-screen bg-slate-50/50 dark:bg-slate-950/50">
+      <SidebarInset className="flex flex-col min-h-screen bg-slate-50/50 dark:bg-slate-950/50 relative">
         <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background/95 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="-ml-1" />
@@ -56,6 +59,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {USER_PROFILE.role === "admin" && (
+                  <>
+                    <DropdownMenuItem onClick={() => setShareOpen(true)} className="cursor-pointer font-medium text-primary focus:bg-primary/5">
+                      <UserPlus className="mr-2 h-4 w-4" /> Share Access
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
                 <DropdownMenuItem className="cursor-pointer">
                   <UserIcon className="mr-2 h-4 w-4" /> Profile
                 </DropdownMenuItem>
@@ -74,6 +85,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
             {children}
           </div>
+          <ShareAccessDialog open={shareOpen} onOpenChange={setShareOpen} />
         </main>
       </SidebarInset>
     </SidebarProvider>

@@ -1,15 +1,28 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Hexagon, Lock, Mail } from "lucide-react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Hexagon, Lock, Mail, ShieldAlert, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 export function LoginPage() {
   const navigate = useNavigate();
-  const handleLogin = (e: React.FormEvent) => {
+  const [searchParams] = useSearchParams();
+  const [authenticating, setAuthenticating] = React.useState(false);
+  const inviteToken = searchParams.get('invite');
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAuthenticating(true);
+    // Simulate token validation or standard auth
+    if (inviteToken) {
+      console.log("Validating guest token:", inviteToken);
+      await new Promise(r => setTimeout(r, 1000));
+    } else {
+      await new Promise(r => setTimeout(r, 500));
+    }
     navigate("/");
   };
   return (
@@ -22,17 +35,26 @@ export function LoginPage() {
             <Hexagon className="h-7 w-7 text-white fill-white/20" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">FinNexus</h1>
-          <p className="text-muted-foreground text-center max-w-xs">
-            Enter your credentials to access the enterprise terminal
-          </p>
+          {inviteToken ? (
+             <Badge variant="outline" className="flex items-center gap-1.5 py-1 px-3 border-emerald-500/30 bg-emerald-500/5 text-emerald-600 font-bold uppercase tracking-widest text-[10px]">
+               <ShieldAlert className="h-3 w-3" /> Guest Access Authorized
+             </Badge>
+          ) : (
+            <p className="text-muted-foreground text-center max-w-xs">
+              Enter your credentials to access the enterprise terminal
+            </p>
+          )}
         </div>
         <Card className="border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none bg-background/80 backdrop-blur-sm">
           <form onSubmit={handleLogin}>
             <CardHeader className="space-y-1">
-              <CardTitle className="text-xl">Welcome back</CardTitle>
-              <CardDescription>Secure biometric or password login required</CardDescription>
+              <CardTitle className="text-xl">{inviteToken ? "Collaborator Login" : "Welcome back"}</CardTitle>
+              <CardDescription>
+                {inviteToken ? "Temporary read-only session will be initiated" : "Secure biometric or password login required"}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            {!inviteToken && (
+              <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <div className="relative">
@@ -57,9 +79,15 @@ export function LoginPage() {
                 </Label>
               </div>
             </CardContent>
+            )}
+            {inviteToken && (
+               <CardContent className="py-8 text-center space-y-4">
+                 <div className="text-sm text-muted-foreground">You have been invited to view the FinNexus Terminal as a guest contributor. Access is restricted to analytics dashboards only.</div>
+               </CardContent>
+            )}
             <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full btn-gradient py-6 text-lg">
-                Authorize Access
+              <Button type="submit" disabled={authenticating} className="w-full btn-gradient py-6 text-lg">
+                {authenticating ? <Loader2 className="h-5 w-5 animate-spin" /> : (inviteToken ? "Enter as Guest" : "Authorize Access")}
               </Button>
               <div className="text-center text-xs text-muted-foreground">
                 Authorized access only. All actions are audited.

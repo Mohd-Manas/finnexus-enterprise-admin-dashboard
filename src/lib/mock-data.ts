@@ -1,10 +1,16 @@
 import { User } from "@shared/types";
-export const USER_PROFILE = {
+export const USER_PROFILE: User = {
   id: "u-99",
   name: "Alexander Vance",
   email: "a.vance@finnexus.enterprise",
-  role: "Senior Managing Director",
+  role: "admin",
   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+} as any;
+export const GUEST_USER_MOCK: User = {
+  id: "g-temp",
+  name: "Guest Collaborator",
+  role: "guest",
+  status: "active",
 };
 export const DASHBOARD_SUMMARY = [
   { title: "Total Equity", value: "$42.8M", trend: "up" as const, change: "+12.5%", icon: "DollarSign" },

@@ -9,6 +9,19 @@ export function userRoutes(app: Hono<{ Bindings: Env }>) {
   app.get('/api/stats', async (c) => {
     return ok(c, SYSTEM_STATS);
   });
+
+  // INVITE GENERATION
+  app.post('/api/invites', async (c) => {
+    const token = crypto.randomUUID();
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    const inviteUrl = `${new URL(c.req.url).origin}/login?invite=${token}`;
+    
+    // Create Guest User in DB
+    await UserEntity.create(c.env, { id: `guest-${token}`, name: `Guest_${token.slice(0, 4)}`, role: 'guest', status: 'active', expiresAt } as any);
+    
+    return ok(c, { token, inviteUrl, expiresAt });
+  });
+
   // TASKS (Simulated)
   app.get('/api/tasks', async (c) => {
     return ok(c, PROJECT_TASKS);

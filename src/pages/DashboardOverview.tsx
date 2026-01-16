@@ -16,7 +16,14 @@ export function DashboardOverview() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {DASHBOARD_SUMMARY.map((metric, i) => (
-            <MetricCard key={i} {...metric} />
+            <MetricCard 
+              key={i} 
+              title={metric.title}
+              value={metric.value}
+              trend={metric.trend}
+              change={metric.change}
+              icon={metric.icon}
+            />
           ))}
         </div>
         <div className="grid gap-6 md:grid-cols-6 lg:grid-cols-12">

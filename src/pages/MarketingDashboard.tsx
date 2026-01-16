@@ -1,26 +1,25 @@
 import React from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
-import { MARKETING_CAMPAIGNS, CONVERSION_FUNNEL, TOP_CONTENT } from "@/lib/mock-data";
+import { MARKETING_CAMPAIGNS, CONVERSION_FUNNEL } from "@/lib/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { Calendar, FileText, Globe, MousePointerClick } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChannelBreakdownDonut, MarketingTrendsChart } from "@/components/dashboard/charts/MarketingCharts";
 export function MarketingDashboard() {
   return (
     <DashboardLayout>
-      <div className="space-y-10 animate-fade-in">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black tracking-tight">Marketing Intelligence</h1>
-            <p className="text-muted-foreground text-sm font-bold uppercase tracking-wide opacity-70">Node acquisition funnel and multi-channel attribution analytics.</p>
+      <div className="space-y-8 animate-fade-in">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Marketing Analytics</h1>
+            <p className="text-muted-foreground">Campaign performance and acquisition metrics.</p>
           </div>
-          <Button variant="outline" className="flex items-center gap-2 h-11 text-[10px] font-black uppercase tracking-widest px-6 border-slate-300 dark:border-slate-700 shadow-sm">
+          <Button variant="outline" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            LIFETIME PROTOCOL DATA
+            Last 30 Days
           </Button>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -29,18 +28,10 @@ export function MarketingDashboard() {
           <MetricCard title="Avg CPA" value="$35.71" trend="down" change="-2.4%" icon="Zap" />
           <MetricCard title="Conversion Rate" value="4.8%" trend="up" change="+0.5%" icon="TrendingUp" />
         </div>
-        <div className="grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-8">
-            <MarketingTrendsChart />
-          </div>
-          <div className="lg:col-span-4">
-            <ChannelBreakdownDonut />
-          </div>
-        </div>
-        <div className="grid gap-8 lg:grid-cols-12">
-          <Card className="lg:col-span-7 border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm shadow-sm">
+        <div className="grid gap-6 lg:grid-cols-12">
+          <Card className="lg:col-span-7 border-slate-200 dark:border-slate-800">
             <CardHeader>
-              <CardTitle className="text-base font-black tracking-tight uppercase">Acquisition Funnel (Global Nodes)</CardTitle>
+              <CardTitle className="text-base font-semibold">Acquisition Funnel</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-[350px] w-full">
@@ -57,19 +48,17 @@ export function MarketingDashboard() {
                       type="category"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fontSize: 11, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }}
+                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
                     />
                     <Tooltip
                       cursor={{ fill: 'transparent' }}
                       contentStyle={{
                         backgroundColor: "hsl(var(--background))",
                         borderColor: "hsl(var(--border))",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        fontWeight: 900
+                        borderRadius: "8px"
                       }}
                     />
-                    <Bar dataKey="count" radius={[0, 6, 6, 0]} barSize={35}>
+                    <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={40}>
                       {CONVERSION_FUNNEL.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.fill} />
                       ))}
@@ -79,71 +68,69 @@ export function MarketingDashboard() {
               </div>
             </CardContent>
           </Card>
-          <Card className="lg:col-span-5 border-slate-200 dark:border-slate-800 bg-background/50 backdrop-blur-sm shadow-sm">
+          <Card className="lg:col-span-5 border-slate-200 dark:border-slate-800">
             <CardHeader>
-              <CardTitle className="text-base font-black tracking-tight uppercase">Active Campaign Performance</CardTitle>
+              <CardTitle className="text-base font-semibold">Active Campaigns</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 {MARKETING_CAMPAIGNS.map((campaign) => (
-                  <div key={campaign.id} className="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
-                    <div className="flex items-center gap-4">
-                      <div className={`h-2.5 w-2.5 rounded-full ${campaign.color} shadow-sm`} />
-                      <div className="space-y-1">
-                        <p className="text-sm font-black tracking-tight">{campaign.name}</p>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{campaign.leads} nodes generated</p>
+                  <div key={campaign.id} className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-2 w-2 rounded-full ${campaign.color}`} />
+                      <div className="space-y-0.5">
+                        <p className="text-sm font-medium">{campaign.name}</p>
+                        <p className="text-xs text-muted-foreground">{campaign.leads} leads generated</p>
                       </div>
                     </div>
-                    <div className="text-right space-y-1">
-                      <p className="text-sm font-black text-emerald-600 dark:text-emerald-400 tabular-nums">{campaign.roi} ROI</p>
-                      <Badge variant={campaign.status === "Active" ? "default" : "secondary"} className="text-[8px] h-4 font-black uppercase tracking-widest">
+                    <div className="text-right">
+                      <p className="text-sm font-bold">{campaign.roi}</p>
+                      <Badge variant={campaign.status === "Active" ? "default" : "secondary"} className="text-[10px] h-4">
                         {campaign.status}
                       </Badge>
                     </div>
                   </div>
                 ))}
               </div>
-              <Button variant="ghost" className="w-full mt-6 text-[10px] font-black uppercase tracking-[0.2em] h-10 hover:bg-primary/5 hover:text-primary transition-all">MANAGE GLOBAL CLUSTERS</Button>
+              <Button variant="ghost" className="w-full mt-6 text-xs font-semibold">Manage All Campaigns</Button>
             </CardContent>
           </Card>
         </div>
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
-            <Globe className="h-5 w-5 text-primary" />
-            <h2 className="text-sm font-black uppercase tracking-[0.25em] text-muted-foreground/80">Top Performing Content Assets</h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {TOP_CONTENT.map((content) => (
-              <Card key={content.id} className="border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm transition-all hover:scale-[1.02] group cursor-default shadow-sm overflow-hidden">
-                <CardHeader className="pb-3 flex flex-row items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0 border border-transparent group-hover:border-primary/20 transition-all">
-                    {content.type === 'Blog' ? <FileText className="h-5 w-5 text-primary" /> : <MousePointerClick className="h-5 w-5 text-primary" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{content.type}</p>
-                    <CardTitle className="text-sm font-black tracking-tight leading-none truncate mt-1">{content.name}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest">Efficiency Index</p>
-                      <p className="text-xl font-black tracking-tighter text-[#020B4B] dark:text-blue-400 mt-1">{content.metrics}</p>
-                    </div>
-                    <Badge variant="outline" className="text-[8px] font-black h-5 px-2 tracking-widest border-slate-300 dark:border-slate-700 uppercase">
-                      {content.visits.toLocaleString()} VISITS
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-        <div className="pt-4 border-t border-dashed flex justify-center">
-          <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] opacity-50">
-            SKYLINKS MARKETING INTELLIGENCE CORE v2.4.0-SECURE
-          </p>
-        </div>
+        <Card className="border-slate-200 dark:border-slate-800">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Campaign Performance Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Campaign Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Total Spend</TableHead>
+                  <TableHead>Leads</TableHead>
+                  <TableHead>ROI</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {MARKETING_CAMPAIGNS.map((c) => (
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium">{c.name}</TableCell>
+                    <TableCell>
+                      <Badge variant={c.status === "Active" ? "default" : "outline"}>{c.status}</Badge>
+                    </TableCell>
+                    <TableCell>{c.spend}</TableCell>
+                    <TableCell>{c.leads}</TableCell>
+                    <TableCell className="font-semibold text-emerald-600 dark:text-emerald-400">{c.roi}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm">Details</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   );

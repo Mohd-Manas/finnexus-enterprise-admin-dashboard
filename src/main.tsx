@@ -13,6 +13,8 @@ import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import '@/index.css'
 import { DashboardOverview } from '@/pages/DashboardOverview'
 import { DealingDashboard } from '@/pages/DealingDashboard'
+import { MarketingDashboard } from '@/pages/MarketingDashboard'
+import { BackOfficeDashboard } from '@/pages/BackOfficeDashboard'
 import { LoginPage } from '@/pages/LoginPage'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -24,6 +26,16 @@ const router = createBrowserRouter([
   {
     path: "/dealing",
     element: <DealingDashboard />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/marketing",
+    element: <MarketingDashboard />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/backoffice",
+    element: <BackOfficeDashboard />,
     errorElement: <RouteErrorBoundary />,
   },
   {

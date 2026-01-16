@@ -37,30 +37,31 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
   const Icon = ICONS[icon] || DollarSign;
   return (
     <div className="animate-in slide-in-from-bottom-2 fade-in duration-500 ease-out [animation-fill-mode:forwards]">
-      <Card className="overflow-hidden transition-all duration-300 hover:scale-[1.05] hover:shadow-glow-lg border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm group cursor-default">
-        <CardContent className="p-5">
-          <div className="flex items-center justify-between space-y-0 pb-3">
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-tight truncate overflow-hidden text-ellipsis whitespace-nowrap">
+      <Card className="overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm group cursor-default">
+        <CardContent className="p-8">
+          <div className="flex items-center justify-between pb-4">
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest leading-tight h-auto">
               {title}
             </p>
-            <div className="h-8 w-8 rounded-lg bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0 ml-2">
-              <Icon className="h-4 w-4 text-primary" />
+            <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0 ml-2 shadow-sm">
+              <Icon className="h-6 w-6 text-primary" />
             </div>
           </div>
-          <div className="flex flex-col gap-1 mt-0.5">
-            <h2 className="text-2xl xl:text-xl 2xl:text-3xl font-black tracking-tight text-foreground tabular-nums drop-shadow-sm leading-none truncate">
+          <div className="flex flex-col gap-1.5 mt-1">
+            <h2 className="text-3xl font-black tracking-tight text-foreground tabular-nums drop-shadow-sm leading-none">
               {value}
             </h2>
-            <div className="flex flex-wrap items-center gap-2 mt-2">
+            <div className="flex flex-wrap items-center gap-2 mt-3">
               <span className={cn(
-                "flex items-center text-[9px] font-black px-1.5 py-0.5 rounded border uppercase tracking-wider whitespace-nowrap",
+                "flex items-center text-[10px] font-black px-2 py-1 rounded-lg border uppercase tracking-wider whitespace-nowrap shadow-sm transition-colors",
                 trend === "up"
-                  ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-                  : "bg-rose-600 text-white border-rose-500 shadow-sm"
+                  ? "bg-emerald-600 text-white border-emerald-500"
+                  : "bg-rose-600 text-white border-rose-500"
               )}>
-                {trend === "up" ? <ArrowUpRight className="mr-0.5 h-2.5 w-2.5" /> : <ArrowDownRight className="mr-0.5 h-2.5 w-2.5" />}
+                {trend === "up" ? <ArrowUpRight className="mr-0.5 h-3 w-3" /> : <ArrowDownRight className="mr-0.5 h-3 w-3" />}
                 {change}
               </span>
+              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter">vs prev session</span>
             </div>
           </div>
         </CardContent>

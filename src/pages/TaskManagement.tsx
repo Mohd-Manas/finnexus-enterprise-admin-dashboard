@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, GripVertical, Filter, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 export function TaskManagement() {
   const [tasks, setTasks] = useState(PROJECT_TASKS);
   const moveTask = useCallback((taskId: string) => {
@@ -29,7 +30,7 @@ export function TaskManagement() {
         ...task,
         column: destination.id
       };
-      toast.info(`Task moved: ${TASK_COLUMNS[currentColumnIndex].title} �� ${destination.title}`, {
+      toast.info(`Task moved: ${TASK_COLUMNS[currentColumnIndex].title} → ${destination.title}`, {
         description: task.title
       });
       return newTasks;
@@ -79,7 +80,7 @@ export function TaskManagement() {
             <div key={column.id} className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-1">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
-                  {column.title} 
+                  {column.title}
                   <span className="bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[9px] font-bold opacity-70">
                     {getColumnTasks(column.id).length}
                   </span>

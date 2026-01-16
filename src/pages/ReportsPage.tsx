@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileDown, Share2, Filter, Loader2, LineChart as ChartIcon } from "lucide-react";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, Legend } from "recharts";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 export function ReportsPage() {
   const [isExporting, setIsExporting] = useState(false);
   const handleExport = () => {
@@ -97,10 +100,10 @@ export function ReportsPage() {
                         name === 'efficiency' ? 'Team Efficiency' : 'Request Volume'
                       ]}
                     />
-                    <Legend 
-                      verticalAlign="top" 
-                      height={36} 
-                      iconType="circle" 
+                    <Legend
+                      verticalAlign="top"
+                      height={36}
+                      iconType="circle"
                       wrapperStyle={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em' }}
                     />
                     <Area
@@ -146,11 +149,11 @@ export function ReportsPage() {
                     <span className="text-xs font-black tabular-nums">{ki.val}%</span>
                   </div>
                   <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                    <motion.div 
+                    <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${ki.val}%` }}
                       transition={{ duration: 1, ease: "easeOut" }}
-                      className={cn("h-full rounded-full", ki.color)} 
+                      className={cn("h-full rounded-full", ki.color)}
                     />
                   </div>
                 </div>
@@ -187,8 +190,8 @@ export function ReportsPage() {
                       </TableCell>
                       <TableCell className="font-bold text-sm tracking-tight">{log.subject}</TableCell>
                       <TableCell>
-                        <Badge 
-                          variant={log.status === "Closed" ? "outline" : "default"} 
+                        <Badge
+                          variant={log.status === "Closed" ? "outline" : "default"}
                           className={cn(
                             "text-[9px] font-black uppercase tracking-tighter px-1.5 h-4",
                             log.status === "Closed" ? "border-slate-200 text-muted-foreground" : "bg-primary/10 text-primary border-none"

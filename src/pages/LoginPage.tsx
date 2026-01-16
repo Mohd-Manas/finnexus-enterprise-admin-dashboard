@@ -22,8 +22,8 @@ export function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
-    // Official SkyLinks Admin Credentials
-    const isAdmin = email.toLowerCase() === "a.vance@skylinkscapital.com" && password === "Admin@123";
+    // Official SkyLinks Admin Credentials - Case-insensitive email, Case-sensitive password
+    const isAdmin = email.toLowerCase() === "admin@skylinkscapital.com" && password === "Admin@123";
     if (inviteToken) {
       await new Promise(r => setTimeout(r, 1200));
       login("guest-node@skylinkscapital.com", "guest");
@@ -31,7 +31,7 @@ export function LoginPage() {
       navigate("/overview");
     } else if (isAdmin) {
       await new Promise(r => setTimeout(r, 1000));
-      login(email, "admin");
+      login(email.toLowerCase(), "admin");
       toast.success("Identity Verified. SkyLinks Terminal access granted.");
       navigate("/overview");
     } else {
@@ -92,7 +92,7 @@ export function LoginPage() {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="a.vance@skylinkscapital.com"
+                          placeholder="admin@skylinkscapital.com"
                           className="pl-10 bg-secondary/20 border-slate-200 dark:border-slate-800 focus:ring-primary h-10 text-sm"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}

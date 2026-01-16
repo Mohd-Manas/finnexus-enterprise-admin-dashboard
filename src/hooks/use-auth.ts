@@ -25,7 +25,7 @@ export function useAuth() {
   }, []);
   const login = useCallback((email: string, role: UserRole = 'admin') => {
     // Robust identifier fallback for guests or empty strings
-    const effectiveEmail = email?.trim() || (role === 'guest' ? 'guest-node@skylinkscapital.com' : 'a.vance@skylinkscapital.com');
+    const effectiveEmail = email?.trim() || (role === 'guest' ? 'guest-node@skylinkscapital.com' : 'admin@skylinkscapital.com');
     const sessionUser: User = {
       ...USER_PROFILE,
       id: role === 'guest' ? `guest-${crypto.randomUUID().slice(0, 8)}` : USER_PROFILE.id,

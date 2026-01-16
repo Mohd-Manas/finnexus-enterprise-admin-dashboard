@@ -116,7 +116,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </header>
         <main className="flex-1 overflow-x-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
             {children}
           </div>
           {isAdmin && <ShareAccessDialog open={shareOpen} onOpenChange={setShareOpen} />}

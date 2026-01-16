@@ -1,27 +1,31 @@
 import { Hono } from "hono";
 import type { Env } from './core-utils';
 import { UserEntity, ChatBoardEntity } from "./entities";
-import { ok, bad, notFound, isStr } from './core-utils';
-import { SYSTEM_STATS, PROJECT_TASKS } from "../src/lib/mock-data";
+import { ok, bad } from './core-utils';
+import { SYSTEM_STATS, PROJECT_TASKS } from "@shared/mock-data";
+import { User } from "@shared/types";
 export function userRoutes(app: Hono<{ Bindings: Env }>) {
   app.get('/api/test', (c) => c.json({ success: true, data: { name: 'FinNexus API V1' }}));
   // SYSTEM STATS
   app.get('/api/stats', async (c) => {
     return ok(c, SYSTEM_STATS);
   });
-
   // INVITE GENERATION
   app.post('/api/invites', async (c) => {
     const token = crypto.randomUUID();
     const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
     const inviteUrl = `${new URL(c.req.url).origin}/login?invite=${token}`;
-    
     // Create Guest User in DB
-    await UserEntity.create(c.env, { id: `guest-${token}`, name: `Guest_${token.slice(0, 4)}`, role: 'guest', status: 'active', expiresAt } as any);
-    
+    const guestUser: User = { 
+      id: `guest-${token}`, 
+      name: `Guest_${token.slice(0, 4)}`, 
+      role: 'guest', 
+      status: 'active', 
+      expiresAt 
+    };
+    await UserEntity.create(c.env, guestUser);
     return ok(c, { token, inviteUrl, expiresAt });
   });
-
   // TASKS (Simulated)
   app.get('/api/tasks', async (c) => {
     return ok(c, PROJECT_TASKS);

@@ -1,4 +1,6 @@
 import { User } from "@shared/types";
+import { SYSTEM_STATS, PROJECT_TASKS } from "@shared/mock-data";
+export { SYSTEM_STATS, PROJECT_TASKS };
 export const USER_PROFILE: User = {
   id: "u-99",
   name: "Alexander Vance",
@@ -83,13 +85,6 @@ export const TASK_COLUMNS = [
   { id: "in-progress", title: "In Progress" },
   { id: "done", title: "Done" },
 ];
-export const PROJECT_TASKS = [
-  { id: "task-1", title: "Risk Engine Audit", priority: "High", column: "in-progress", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=1" },
-  { id: "task-2", title: "HFT Node Optimization", priority: "Medium", column: "todo", user: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=2" },
-  { id: "task-3", title: "Compliance Report Q3", priority: "High", column: "backlog", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3" },
-  { id: "task-4", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4" },
-  { id: "task-5", title: "Market Data Feed Fix", priority: "High", column: "in-progress", user: "Maria G.", avatar: "https://i.pravatar.cc/150?u=5" },
-];
 export const REPORT_DATA = [
   { month: "Jan", efficiency: 78, volume: 4500 },
   { month: "Feb", efficiency: 82, volume: 5200 },
@@ -98,10 +93,3 @@ export const REPORT_DATA = [
   { month: "May", efficiency: 94, volume: 5900 },
   { month: "Jun", efficiency: 92, volume: 7200 },
 ];
-export const SYSTEM_STATS = {
-  activeSessions: 1242,
-  serverLoad: "42%",
-  uptime: "99.998%",
-  lastDeployment: "2h ago",
-  apiLatency: "14ms",
-};

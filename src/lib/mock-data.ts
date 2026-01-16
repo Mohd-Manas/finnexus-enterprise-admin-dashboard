@@ -20,6 +20,13 @@ export const DASHBOARD_SUMMARY = [
   { title: "Margin Utilization", value: "64.2%", trend: "down" as const, change: "-2.1%", icon: "Zap" },
   { title: "Daily P&L", value: "+$124.5k", trend: "up" as const, change: "+18.3%", icon: "TrendingUp" },
 ];
+export const BACKOFFICE_METRICS = [
+  { title: "Open Tickets", value: "24", trend: "up" as const, change: "+4", icon: "Users" },
+  { title: "Pending KYC", value: "182", trend: "down" as const, change: "-12", icon: "Zap" },
+  { title: "Compliance Alerts", value: "3", trend: "up" as const, change: "+1", icon: "TrendingUp" },
+  { title: "Notifications / Alerts", value: "12", trend: "up" as const, change: "+3", icon: "Bell" },
+  { title: "Finance Summary", value: "$1.2M", trend: "down" as const, change: "-2%", icon: "DollarSign" },
+];
 export const DEALING_METRICS = [
   { title: "Total Equity", value: "$42.8M", trend: "up" as const, change: "+12.5%", icon: "DollarSign" },
   { title: "Total Credit", value: "$184.2M", trend: "up" as const, change: "+4.3%", icon: "CreditCard" },

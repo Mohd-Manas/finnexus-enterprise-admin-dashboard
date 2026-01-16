@@ -12,7 +12,8 @@ import {
   CreditCard,
   Layers,
   Activity,
-  BarChart3
+  BarChart3,
+  Bell
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 const ICONS: Record<string, LucideIcon> = {
@@ -24,7 +25,8 @@ const ICONS: Record<string, LucideIcon> = {
   CreditCard,
   Layers,
   Activity,
-  BarChart3
+  BarChart3,
+  Bell
 };
 interface MetricCardProps {
   title: string;

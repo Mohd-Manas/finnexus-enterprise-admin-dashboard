@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
-import { BACKOFFICE_TICKETS, COMPLIANCE_ALERTS } from "@/lib/mock-data";
+import { BACKOFFICE_TICKETS, COMPLIANCE_ALERTS, BACKOFFICE_METRICS } from "@/lib/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -38,11 +38,17 @@ export function BackOfficeDashboard() {
           <h1 className="text-3xl font-bold tracking-tight">Operations Center</h1>
           <p className="text-muted-foreground">Compliance monitoring and back-office support workflows.</p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <MetricCard title="Open Tickets" value="24" trend="up" change="+4" icon="Users" />
-          <MetricCard title="Pending KYC" value="182" trend="down" change="-12" icon="Zap" />
-          <MetricCard title="Compliance Alerts" value="3" trend="up" change="+1" icon="TrendingUp" />
-          <MetricCard title="Avg Res. Time" value="1.4h" trend="down" change="-15m" icon="TrendingDown" />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {BACKOFFICE_METRICS.map((metric, i) => (
+            <MetricCard 
+              key={i} 
+              title={metric.title} 
+              value={metric.value} 
+              trend={metric.trend} 
+              change={metric.change} 
+              icon={metric.icon} 
+            />
+          ))}
         </div>
         <div className="grid gap-6 lg:grid-cols-12">
           <Card className="lg:col-span-4 border-slate-200 dark:border-slate-800">

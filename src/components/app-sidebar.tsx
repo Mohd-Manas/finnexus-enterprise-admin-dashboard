@@ -1,72 +1,101 @@
-/* This is a demo sidebar. **COMPULSORY** Edit this file to customize the sidebar OR remove it from appLayout OR don't use appLayout at all */
 import React from "react";
-import { Home, Layers, Compass, Star, Settings, LifeBuoy } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { 
+  LayoutDashboard, 
+  CandlestickChart, 
+  Megaphone, 
+  ShieldCheck, 
+  CheckSquare, 
+  BarChart3, 
+  Settings, 
+  LogOut,
+  Hexagon
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarSeparator,
-  SidebarInput,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuAction,
-  SidebarMenuBadge,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
-
+import { cn } from "@/lib/utils";
 export function AppSidebar(): JSX.Element {
+  const location = useLocation();
+  const platformRoutes = [
+    { name: "Overview", icon: LayoutDashboard, path: "/" },
+    { name: "Dealing", icon: CandlestickChart, path: "/dealing" },
+    { name: "Marketing", icon: Megaphone, path: "/marketing" },
+  ];
+  const operationsRoutes = [
+    { name: "Back Office", icon: ShieldCheck, path: "/backoffice" },
+    { name: "Tasks", icon: CheckSquare, path: "/tasks" },
+    { name: "Reports", icon: BarChart3, path: "/reports" },
+  ];
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1">
-          <div className="h-6 w-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-500" />
-          <span className="text-sm font-medium">Demo Sidebar</span>
+    <Sidebar variant="sidebar" collapsible="icon">
+      <SidebarHeader className="h-16 flex items-center px-4 border-b">
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+            <Hexagon className="h-5 w-5 text-primary-foreground fill-primary-foreground/20" />
+          </div>
+          <span className="text-lg font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
+            FinNexus
+          </span>
         </div>
-        <SidebarInput placeholder="Search" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive>
-                <a href="#"><Home /> <span>Home</span></a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#"><Layers /> <span>Projects</span></a>
-              </SidebarMenuButton>
-              <SidebarMenuAction>
-                <Star className="size-4" />
-              </SidebarMenuAction>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#"><Compass /> <span>Explore</span></a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {platformRoutes.map((route) => (
+              <SidebarMenuItem key={route.path}>
+                <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
+                  <Link to={route.path}>
+                    <route.icon />
+                    <span>{route.name}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
-
         <SidebarSeparator />
-
         <SidebarGroup>
-          <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
+          <SidebarGroupLabel>Operations</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#"><Star /> <span>Starred</span></a>
-              </SidebarMenuButton>
-              <SidebarMenuBadge>5</SidebarMenuBadge>
-            </SidebarMenuItem>
+            {operationsRoutes.map((route) => (
+              <SidebarMenuItem key={route.path}>
+                <SidebarMenuButton asChild isActive={location.pathname === route.path} tooltip={route.name}>
+                  <Link to={route.path}>
+                    <route.icon />
+                    <span>{route.name}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="px-2 text-xs text-muted-foreground">A simple shadcn sidebar</div>
+      <SidebarFooter className="border-t p-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="Settings">
+              <Settings />
+              <span>Settings</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="Logout" className="text-destructive hover:text-destructive">
+              <LogOut />
+              <span>Log out</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );

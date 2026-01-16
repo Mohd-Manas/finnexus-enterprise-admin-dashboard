@@ -1,23 +1,6 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ArrowUpRight,
-  ArrowDownRight,
-  LucideIcon,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  Users,
-  Zap,
-  CreditCard,
-  Layers,
-  Activity,
-  BarChart3,
-  Bell,
-  ShieldCheck,
-  Megaphone,
-  CheckSquare
-} from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, LucideIcon, TrendingUp, TrendingDown, DollarSign, Users, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 const ICONS: Record<string, LucideIcon> = {
   DollarSign,
@@ -25,14 +8,6 @@ const ICONS: Record<string, LucideIcon> = {
   Zap,
   TrendingUp,
   TrendingDown,
-  CreditCard,
-  Layers,
-  Activity,
-  BarChart3,
-  Bell,
-  ShieldCheck,
-  Megaphone,
-  CheckSquare
 };
 interface MetricCardProps {
   title: string;
@@ -44,36 +19,28 @@ interface MetricCardProps {
 export function MetricCard({ title, value, trend, change, icon }: MetricCardProps) {
   const Icon = ICONS[icon] || DollarSign;
   return (
-    <div className="animate-in slide-in-from-bottom-2 fade-in duration-500 ease-out [animation-fill-mode:forwards]">
-      <Card className="overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg border-slate-200 dark:border-slate-800 bg-background/60 backdrop-blur-sm group cursor-default">
-        <CardContent className="p-5 lg:p-6 xl:p-8">
-          <div className="flex items-start justify-between pb-4 min-w-0">
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest leading-tight break-words flex-1 min-h-[2.5rem]">
-              {title}
-            </p>
-            <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0 ml-2 shadow-sm">
-              <Icon className="h-6 w-6 text-primary shrink-0 transition-transform group-hover:scale-110" />
-            </div>
+    <Card className="overflow-hidden transition-all hover:shadow-md border-slate-200 dark:border-slate-800">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{title}</p>
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <Icon className="h-5 w-5 text-primary" />
           </div>
-          <div className="flex flex-col gap-1.5 mt-1">
-            <h2 className="text-2xl xl:text-3xl font-black tracking-tight text-foreground tabular-nums drop-shadow-sm leading-none truncate">
-              {value}
-            </h2>
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              <span className={cn(
-                "flex items-center text-[10px] font-black px-2 py-1 rounded-lg border uppercase tracking-wider whitespace-nowrap shadow-sm transition-all",
-                trend === "up"
-                  ? "bg-emerald-600 text-white border-emerald-500"
-                  : "bg-rose-600 text-white border-rose-500"
-              )}>
-                {trend === "up" ? <ArrowUpRight className="mr-0.5 h-3 w-3" /> : <ArrowDownRight className="mr-0.5 h-3 w-3" />}
-                {change}
-              </span>
-              <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter">vs prev session</span>
-            </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <h2 className="text-2xl font-bold tracking-tight">{value}</h2>
+          <div className="flex items-center gap-1.5">
+            <span className={cn(
+              "flex items-center text-xs font-semibold px-1.5 py-0.5 rounded-full",
+              trend === "up" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" : "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400"
+            )}>
+              {trend === "up" ? <ArrowUpRight className="mr-1 h-3 w-3" /> : <ArrowDownRight className="mr-1 h-3 w-3" />}
+              {change}
+            </span>
+            <span className="text-xs text-muted-foreground font-medium">vs last month</span>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

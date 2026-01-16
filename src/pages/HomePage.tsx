@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 export function HomePage() {
   const navigate = useNavigate();
   useEffect(() => {
-    const authSession = localStorage.getItem('finnexus_auth_session');
+    const authSession = localStorage.getItem('skylinks_terminal_session');
     const timer = setTimeout(() => {
       if (authSession) {
         navigate('/overview');
@@ -55,7 +55,7 @@ export function HomePage() {
             transition={{ delay: 0.5 }}
             className="text-slate-400 text-sm md:text-base font-medium uppercase tracking-[0.3em]"
           >
-            SkyLinks Capital Financial Core
+            Enterprise Financial Infrastructure
           </motion.p>
         </div>
         <motion.div
@@ -64,14 +64,14 @@ export function HomePage() {
           transition={{ delay: 0.8 }}
           className="flex flex-col items-center gap-4"
         >
-          <div className="flex items-center gap-3 text-indigo-400 text-xs font-mono font-bold bg-indigo-500/10 px-4 py-2 rounded-full border border-indigo-500/20">
+          <div className="flex items-center gap-3 text-primary text-xs font-mono font-bold bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
             <Loader2 className="h-3 w-3 animate-spin" />
             SYNCHRONIZING SECURE NODES...
           </div>
         </motion.div>
       </motion.div>
       <footer className="absolute bottom-10 text-center text-slate-600 text-[10px] font-bold tracking-widest uppercase">
-        <p>© 2025 SkyLinks Capital • Version 4.8.2-LTS</p>
+        <p>© 2025 SkyLinks Capital �� Secure Terminal V4.8.2-LTS</p>
       </footer>
     </div>
   )

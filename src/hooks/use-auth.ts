@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, UserRole } from '@shared/types';
 import { USER_PROFILE } from '@/lib/mock-data';
-const AUTH_KEY = 'finnexus_auth_session';
+const AUTH_KEY = 'skylinks_terminal_session';
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -13,8 +13,10 @@ export function useAuth() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setUser(parsed);
-        setIsAuthenticated(true);
+        if (parsed && typeof parsed === 'object' && parsed.id) {
+          setUser(parsed);
+          setIsAuthenticated(true);
+        }
       } catch (e) {
         localStorage.removeItem(AUTH_KEY);
       }
@@ -22,13 +24,18 @@ export function useAuth() {
     setIsLoading(false);
   }, []);
   const login = useCallback((email: string, role: UserRole = 'admin') => {
+    // Robust identifier fallback for guests or empty strings
+    const effectiveEmail = email?.trim() || (role === 'guest' ? 'guest-node@skylinkscapital.com' : 'a.vance@skylinkscapital.com');
     const sessionUser: User = {
       ...USER_PROFILE,
       id: role === 'guest' ? `guest-${crypto.randomUUID().slice(0, 8)}` : USER_PROFILE.id,
-      name: role === 'guest' ? `Guest User` : "Alexander Vance",
-      email: role === 'admin' ? "a.vance@skylinkscapital.com" : email,
+      name: role === 'guest' ? `Guest Collaborator` : "Alexander Vance",
+      email: effectiveEmail,
       role: role,
       status: 'active',
+      avatar: role === 'admin' 
+        ? USER_PROFILE.avatar 
+        : `https://ui-avatars.com/api/?name=Guest&background=0F172A&color=fff`,
     };
     localStorage.setItem(AUTH_KEY, JSON.stringify(sessionUser));
     setUser(sessionUser);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Lock, Mail, ShieldAlert, Loader2, AlertCircle, ShieldCheck } from "lucide-react";
+import { Lock, Mail, ShieldAlert, Loader2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,22 +22,22 @@ export function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthenticating(true);
-    // Strict validation: admin@skylinkscapital.com / Admin@123
     const isAdmin = email === "admin@skylinkscapital.com" && password === "Admin@123";
     if (inviteToken) {
       await new Promise(r => setTimeout(r, 1200));
-      login(`guest_${inviteToken.slice(0, 4)}@guest.local`, "guest");
-      toast.success("Guest access authorized. Welcome to the terminal.");
+      // Passing explicit guest identity instead of empty string
+      login("guest-node@skylinkscapital.com", "guest");
+      toast.success("SkyLinks Capital: Guest access authorized.");
       navigate("/overview");
     } else if (isAdmin) {
       await new Promise(r => setTimeout(r, 1000));
       login(email, "admin");
-      toast.success("Identity Verified. SkyLinks Terminal access granted.");
+      toast.success("SkyLinks Capital: Identity Verified. Terminal access granted.");
       navigate("/overview");
     } else {
       await new Promise(r => setTimeout(r, 500));
       toast.error("Invalid Credentials", {
-        description: "The security key or email provided does not match our records.",
+        description: "The security key or email provided does not match SkyLinks records.",
       });
       controls.start({
         x: [-10, 10, -10, 10, 0],
@@ -52,17 +52,15 @@ export function LoginPage() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
       <div className="w-full max-w-md animate-fade-in relative z-10">
         <div className="flex flex-col items-center gap-2 mb-8">
-          <div className="mb-4 overflow-hidden rounded-xl border border-border shadow-2xl">
-            <img 
-              src="https://placehold.co/120x120/0f172a/white?text=SkyLinks" 
-              alt="SkyLinks Capital Logo" 
-              className="h-20 w-20 object-cover"
-            />
+          <div className="mb-4 overflow-hidden rounded-xl border border-border shadow-2xl bg-slate-950 p-3">
+             <div className="h-12 w-12 rounded-lg bg-primary flex items-center justify-center">
+                <ShieldCheck className="h-8 w-8 text-white" />
+             </div>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">SkyLinks Capital Terminal</h1>
           {inviteToken ? (
              <Badge variant="outline" className="flex items-center gap-1.5 py-1 px-3 border-emerald-500/30 bg-emerald-500/5 text-emerald-600 font-bold uppercase tracking-widest text-[10px]">
-               <ShieldAlert className="h-3 w-3" /> Guest Access Authorized
+               <ShieldAlert className="h-3 w-3" /> Guest Node Authorized
              </Badge>
           ) : (
             <p className="text-muted-foreground text-center max-w-xs font-medium uppercase tracking-[0.2em] text-[10px]">
@@ -76,7 +74,7 @@ export function LoginPage() {
               <CardHeader className="space-y-1">
                 <CardTitle className="text-xl">{inviteToken ? "Collaborator Login" : "Secure Authentication"}</CardTitle>
                 <CardDescription>
-                  {inviteToken ? "Temporary read-only session will be initiated" : "Enter enterprise credentials to access the core"}
+                  {inviteToken ? "A temporary read-only session will be initiated" : "Enter enterprise credentials to access the core"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -128,8 +126,8 @@ export function LoginPage() {
                         <ShieldCheck className="h-6 w-6 text-emerald-600" />
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      Access granted via invitation. Terminal modules will be limited to read-only analytics.
+                    <p className="text-sm text-muted-foreground px-4">
+                      Access granted via invitation token. Platform modules will be restricted to read-only analytics.
                     </p>
                   </div>
                 )}
@@ -148,7 +146,7 @@ export function LoginPage() {
         </motion.div>
         {!inviteToken && (
           <p className="mt-6 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-            Authorized access only. All actions are audited.
+            Authorized access only. All actions are audited by SkyLinks Security.
           </p>
         )}
       </div>

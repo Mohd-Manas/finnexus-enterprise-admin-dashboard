@@ -28,18 +28,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       navigate("/login");
     }
   }, [isLoading, isAuthenticated, navigate]);
-  if (isLoading || !isAuthenticated) {
+  if (isLoading || !isAuthenticated || !user) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-slate-950">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="h-12 w-12 rounded-xl bg-primary/20 border border-primary/40" />
-          <span className="text-xs text-primary font-mono tracking-widest uppercase">Securing Session...</span>
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="h-16 w-16 rounded-2xl bg-primary/20 border border-primary/40 animate-pulse" />
+            <div className="absolute inset-0 h-16 w-16 rounded-2xl border-t-2 border-primary animate-spin" />
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-xs text-primary font-mono tracking-[0.3em] uppercase font-bold">Securing Session</span>
+            <span className="text-[10px] text-slate-500 font-mono">Authenticating SkyLinks Node...</span>
+          </div>
         </div>
       </div>
     );
   }
-  const currentUser = user!;
-  const isAdmin = currentUser.role === "admin";
+  const isAdmin = user.role === "admin";
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -65,16 +70,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                   <Avatar className="h-9 w-9 border border-border shadow-sm">
-                    <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
-                    <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="bg-primary text-primary-foreground font-bold">{user.name[0]}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{currentUser.name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{currentUser.email}</p>
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -103,7 +108,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex-1">
+        <main className="flex-1 overflow-x-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
             {children}
           </div>

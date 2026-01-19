@@ -57,7 +57,7 @@ export function MarketingDashboard() {
                       type="category"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fontSize: 11, fontWeight: 900, fill: "hsl(var(--muted-foreground))", textTransform: 'uppercase' }}
+                      tick={{ fontSize: 11, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }}
                     />
                     <Tooltip
                       cursor={{ fill: 'transparent' }}

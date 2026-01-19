@@ -75,3 +75,63 @@ export const COMPLIANCE_TYPE_STATS = [
   { category: 'Risk', volume: 42 },
   { category: 'Trade Audit', volume: 91 },
 ];
+export const PNL_CHART_DATA = [
+  { name: 'Jan', pnl: 4000 },
+  { name: 'Feb', pnl: 3000 },
+  { name: 'Mar', pnl: 5000 },
+  { name: 'Apr', pnl: 4500 },
+  { name: 'May', pnl: 6000 },
+  { name: 'Jun', pnl: 5500 },
+  { name: 'Jul', pnl: 7000 },
+  { name: 'Aug', pnl: 8500 },
+  { name: 'Sep', pnl: 8000 },
+  { name: 'Oct', pnl: 9500 },
+  { name: 'Nov', pnl: 11000 },
+  { name: 'Dec', pnl: 12500 },
+];
+export const MARGIN_CHART_DATA = [
+  { name: 'Used', value: 64 },
+  { name: 'Available', value: 36 },
+];
+export const DEALING_METRICS = [
+  { title: "Total Exposure", value: "$142.5M", trend: "up" as const, change: "+5.4%", icon: "Layers" },
+  { title: "Margin Call Risk", value: "2.1%", trend: "down" as const, change: "-0.8%", icon: "ShieldCheck" },
+  { title: "Active Nodes", value: "24", trend: "up" as const, change: "+2", icon: "Activity" },
+  { title: "Avg Latency", value: "1.2ms", trend: "down" as const, change: "-0.1ms", icon: "Zap" },
+];
+export const TOP_SYMBOLS = [
+  { symbol: "BTC/USD", volume: "1.2B", change: "+4.2%", status: "Bullish" },
+  { symbol: "EUR/USD", volume: "840M", change: "-0.5%", status: "Neutral" },
+  { symbol: "XAU/USD", volume: "450M", change: "+1.2%", status: "Bullish" },
+  { symbol: "ETH/USD", volume: "320M", change: "-2.1%", status: "Volatile" },
+  { symbol: "GBP/JPY", volume: "180M", change: "+0.8%", status: "Bullish" },
+];
+export const BACKOFFICE_METRICS = [
+  { title: "Open Tickets", value: "181", trend: "up" as const, change: "+12", icon: "Bell" },
+  { title: "Pending KYC", value: "42", trend: "down" as const, change: "-8", icon: "Users" },
+  { title: "Compliance Alerts", value: "5", trend: "up" as const, change: "+1", icon: "ShieldCheck" },
+];
+export const BACKOFFICE_TICKETS = [
+  { id: "T-8821", subject: "Withdrawal Delay", priority: "High", assignee: "Sarah L.", status: "Open" },
+  { id: "T-8822", subject: "KYC Verification", priority: "Medium", assignee: "Mike R.", status: "In Progress" },
+  { id: "T-8823", subject: "Login Issue", priority: "Low", assignee: "Alex V.", status: "Closed" },
+  { id: "T-8824", subject: "Margin Adjustment", priority: "High", assignee: "Maria G.", status: "Open" },
+];
+export const COMPLIANCE_ALERTS = [
+  { id: "A-1", type: "AML Trigger", source: "Node HK-04", severity: "Critical", time: "2m ago" },
+  { id: "A-2", type: "High Volume", source: "Account #44092", severity: "High", time: "15m ago" },
+  { id: "A-3", type: "Node Latency", source: "Node NY-01", severity: "Medium", time: "1h ago" },
+];
+export const RECENT_ACTIVITIES = [
+  { id: "act-1", user: "Alex Vance", type: "Security", status: "Approved", time: "5m ago" },
+  { id: "act-2", user: "Sarah Lohman", type: "Compliance", status: "Pending", time: "12m ago" },
+  { id: "act-3", user: "Mike Ross", type: "Trading", status: "Approved", time: "45m ago" },
+];
+export const REPORT_DATA = [
+  { month: "Jan", efficiency: 82, volume: 450 },
+  { month: "Feb", efficiency: 85, volume: 520 },
+  { month: "Mar", efficiency: 78, volume: 480 },
+  { month: "Apr", efficiency: 91, volume: 610 },
+  { month: "May", efficiency: 88, volume: 590 },
+  { month: "Jun", efficiency: 94, volume: 650 },
+];

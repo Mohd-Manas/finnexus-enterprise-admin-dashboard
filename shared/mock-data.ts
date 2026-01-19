@@ -31,6 +31,24 @@ export const PROJECT_TASKS: Task[] = [
   { id: "SKL-103", title: "Compliance Report Q3", priority: "High", column: "backlog", user: "Mike R.", avatar: "https://i.pravatar.cc/150?u=3", description: "Regulatory filing preparation for regional authorities." },
   { id: "SKL-104", title: "API Documentation Update", priority: "Low", column: "done", user: "Alex V.", avatar: "https://i.pravatar.cc/150?u=4", description: "Standardizing endpoint schemas for institutional clients." },
 ];
+export const DASHBOARD_MARKETING_STATS = [
+  { label: "Click-Through", value: "4.2%", trend: "+0.8%", progress: 75 },
+  { label: "Lead Quality", value: "88%", trend: "+2.1%", progress: 88 },
+  { label: "Reach Index", value: "1.2M", trend: "+12k", progress: 62 },
+  { label: "Budget Burn", value: "$45k", trend: "On Track", progress: 42 },
+];
+export const DASHBOARD_BACKOFFICE_STATS = [
+  { label: "SLA Compl.", value: "99.4%", trend: "+0.1%", progress: 99 },
+  { label: "KYC Velocity", value: "2.4h", trend: "-15m", progress: 82 },
+  { label: "Audit Readiness", value: "High", trend: "Stable", progress: 95 },
+  { label: "Queue Load", value: "142", trend: "High", isCritical: true, progress: 88 },
+];
+export const DASHBOARD_TASK_STATS = [
+  { label: "Sprint Vel.", value: "42 pts", trend: "+5", progress: 84 },
+  { label: "Resource Load", value: "72%", trend: "+2%", progress: 72 },
+  { label: "Blockers", value: "3", trend: "-1", progress: 15 },
+  { label: "Done Rate", value: "92%", trend: "+4%", progress: 92 },
+];
 export const CHANNEL_BREAKDOWN = [
   { name: 'Google Ads', value: 42, fill: '#020B4B' },
   { name: 'Social', value: 31, fill: '#10B981' },
@@ -76,18 +94,13 @@ export const COMPLIANCE_TYPE_STATS = [
   { category: 'Trade Audit', volume: 91 },
 ];
 export const PNL_CHART_DATA = [
-  { name: 'Jan', pnl: 4000 },
-  { name: 'Feb', pnl: 3000 },
-  { name: 'Mar', pnl: 5000 },
-  { name: 'Apr', pnl: 4500 },
-  { name: 'May', pnl: 6000 },
-  { name: 'Jun', pnl: 5500 },
-  { name: 'Jul', pnl: 7000 },
-  { name: 'Aug', pnl: 8500 },
-  { name: 'Sep', pnl: 8000 },
-  { name: 'Oct', pnl: 9500 },
-  { name: 'Nov', pnl: 11000 },
-  { name: 'Dec', pnl: 12500 },
+  { name: '00:00', pnl: 4000 },
+  { name: '04:00', pnl: 3000 },
+  { name: '08:00', pnl: 5000 },
+  { name: '12:00', pnl: 4500 },
+  { name: '16:00', pnl: 6000 },
+  { name: '20:00', pnl: 5500 },
+  { name: '24:00', pnl: 7000 },
 ];
 export const MARGIN_CHART_DATA = [
   { name: 'Used', value: 64 },

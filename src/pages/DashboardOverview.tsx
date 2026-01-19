@@ -31,8 +31,8 @@ import {
 import { toast } from "sonner";
 export function DashboardOverview() {
   const handleRefresh = () => {
-    toast.info("Establishing terminal handshake...", { 
-      description: "Resyncing global node clusters and clear-air data feeds." 
+    toast.info("Establishing terminal handshake...", {
+      description: "Resyncing global node clusters and clear-air data feeds."
     });
   };
   const TOOLTIP_STYLE = {
@@ -41,11 +41,12 @@ export function DashboardOverview() {
     borderRadius: "12px",
     fontSize: "10px",
     fontWeight: 900,
-    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+    border: "1px solid hsl(var(--border))"
   } as const;
   return (
     <DashboardLayout>
-      <div className="max-w-7xl mx-auto space-y-10 animate-fade-in">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12 space-y-10 animate-fade-in">
         {/* Header section with Enterprise Branding */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-8">
           <div className="space-y-1">

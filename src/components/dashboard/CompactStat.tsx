@@ -9,12 +9,12 @@ interface CompactStatProps {
   colorClass?: string;
   className?: string;
 }
-export function CompactStat({ 
-  label, 
-  value, 
-  trend, 
-  isCritical, 
-  progress, 
+export function CompactStat({
+  label,
+  value,
+  trend,
+  isCritical,
+  progress,
   colorClass = "bg-[#020B4B]",
   className
 }: CompactStatProps) {
@@ -29,14 +29,16 @@ export function CompactStat({
             {value}
           </span>
           <span className={cn(
-            "text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter",
-            isCritical ? "bg-rose-500 text-white animate-pulse" : "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+            "text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter transition-all",
+            isCritical 
+              ? "bg-rose-500 text-white animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.4)]" 
+              : "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
           )}>
             {trend}
           </span>
         </div>
       </div>
-      <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+      <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
         <div
           className={cn("h-full transition-all duration-1000 ease-out", colorClass)}
           style={{ width: `${progress}%` }}

@@ -72,7 +72,7 @@ export const TRENDS_DATA = Array.from({ length: 30 }).map((_, i) => {
   };
 });
 export const TASK_STATUS_STATS = [
-  { name: 'To Do', value: 35, fill: 'hsl(var(--muted-foreground))' },
+  { name: 'To Do', value: 35, fill: '#64748B' },
   { name: 'In Progress', value: 40, fill: '#1E3A8A' },
   { name: 'Done', value: 25, fill: '#10B981' },
 ];

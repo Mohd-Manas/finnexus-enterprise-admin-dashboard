@@ -31,7 +31,9 @@ import {
 import { toast } from "sonner";
 export function DashboardOverview() {
   const handleRefresh = () => {
-    toast.info("Establishing terminal handshake...", { description: "Resyncing global node clusters." });
+    toast.info("Establishing terminal handshake...", { 
+      description: "Resyncing global node clusters and clear-air data feeds." 
+    });
   };
   const TOOLTIP_STYLE = {
     backgroundColor: "hsl(var(--background))",
@@ -40,7 +42,7 @@ export function DashboardOverview() {
     fontSize: "10px",
     fontWeight: 900,
     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
-  };
+  } as const;
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-10 animate-fade-in">
@@ -51,14 +53,14 @@ export function DashboardOverview() {
               Enterprise Control Dashboard
             </h1>
             <p className="text-muted-foreground text-xs font-black uppercase tracking-[0.3em] opacity-60">
-              Terminal Session: HK-PRO-9442 • Status: Authorized
+              Terminal Session: HK-PRO-9442 • Status: Authorized • 256-Bit Encrypted
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <Button
               variant="outline"
               size="sm"
-              className="h-10 text-[10px] font-black uppercase tracking-widest px-4 border-slate-300 dark:border-slate-700 shadow-sm"
+              className="h-10 text-[10px] font-black uppercase tracking-widest px-4 border-slate-300 dark:border-slate-700 shadow-sm transition-all hover:bg-slate-100 dark:hover:bg-slate-900"
               onClick={handleRefresh}
             >
               <RefreshCcw className="h-3.5 w-3.5 mr-2" /> Refresh Node
@@ -81,24 +83,22 @@ export function DashboardOverview() {
                 <TrendingUp className="h-4 w-4 text-[#020B4B] dark:text-blue-400" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Dealing Performance Sector</CardTitle>
               </div>
-              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-black uppercase tracking-widest">
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-black uppercase tracking-widest hover:text-primary">
                 Full Metrics <ChevronRight className="h-3 w-3 ml-1" />
               </Button>
             </CardHeader>
             <CardContent className="p-6 flex-1 flex flex-col gap-8">
-              {/* Metrics on Top for Balance */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <HorizontalMetric label="Daily Exposure" value="$42.8M" trend="+5.4%" trendValue="up" icon={Layers} />
                 <HorizontalMetric label="Margin Risk" value="2.1%" trend="-0.8%" trendValue="down" icon={ShieldCheck} />
                 <HorizontalMetric label="Active Nodes" value="24" trend="+2" trendValue="up" icon={Activity} />
                 <HorizontalMetric label="Avg Latency" value="1.2ms" trend="-0.1ms" trendValue="down" icon={Zap} />
               </div>
-              {/* Performance Chart on Bottom */}
               <div className="h-[200px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={PNL_CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
-                      <linearGradient id="navGradient" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="dealingNavGradient" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#020B4B" stopOpacity={0.2} />
                         <stop offset="95%" stopColor="#020B4B" stopOpacity={0} />
                       </linearGradient>
@@ -107,19 +107,22 @@ export function DashboardOverview() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }} />
                     <Tooltip contentStyle={TOOLTIP_STYLE} itemStyle={{ color: "#020B4B" }} />
-                    <Area type="monotone" dataKey="pnl" stroke="#020B4B" strokeWidth={3} fill="url(#navGradient)" animationDuration={1500} />
+                    <Area type="monotone" dataKey="pnl" stroke="#020B4B" strokeWidth={3} fill="url(#dealingNavGradient)" animationDuration={1500} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-          {/* Sector 2: Marketing Intelligence (Distribution Analytics) */}
+          {/* Sector 2: Marketing Intelligence */}
           <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
-            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
+            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4 flex flex-row items-center justify-between">
               <div className="flex items-center gap-3">
                 <LayoutGrid className="h-4 w-4 text-emerald-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Marketing Intelligence</CardTitle>
               </div>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-black uppercase tracking-widest hover:text-emerald-500">
+                Campaigns <ChevronRight className="h-3 w-3 ml-1" />
+              </Button>
             </CardHeader>
             <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
@@ -164,13 +167,16 @@ export function DashboardOverview() {
               </div>
             </CardContent>
           </Card>
-          {/* Sector 3: Operations Center (Compliance & Velocity) */}
+          {/* Sector 3: Operations Center */}
           <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
-            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
+            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4 flex flex-row items-center justify-between">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-blue-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Operations Center</CardTitle>
               </div>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-black uppercase tracking-widest hover:text-blue-500">
+                Audit Flow <ChevronRight className="h-3 w-3 ml-1" />
+              </Button>
             </CardHeader>
             <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
@@ -181,7 +187,7 @@ export function DashboardOverview() {
                     value={stat.value}
                     trend={stat.trend}
                     progress={stat.progress}
-                    isCritical={(stat as any).isCritical}
+                    isCritical={stat.label === "Queue Load"}
                     colorClass="bg-[#020B4B]"
                   />
                 ))}
@@ -199,13 +205,16 @@ export function DashboardOverview() {
               </div>
             </CardContent>
           </Card>
-          {/* Sector 4: Task Force Command (Status & Capacity) */}
+          {/* Sector 4: Task Force Command */}
           <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
-            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
+            <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4 flex flex-row items-center justify-between">
               <div className="flex items-center gap-3">
                 <Activity className="h-4 w-4 text-indigo-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Task Force Command</CardTitle>
               </div>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-black uppercase tracking-widest hover:text-indigo-500">
+                Squad Status <ChevronRight className="h-3 w-3 ml-1" />
+              </Button>
             </CardHeader>
             <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
@@ -255,7 +264,7 @@ export function DashboardOverview() {
         {/* Audit Branding Footer */}
         <div className="flex justify-center pt-4 border-t border-dashed border-slate-200 dark:border-slate-800">
           <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] opacity-50">
-            SkyLinks Security Protocol Audit Hub v4.9.2-GOLD • Verified Sessions: 1,242
+            SkyLinks Security Protocol Audit Hub v4.9.2-GOLD • Node Clusters: 2,841 • Latency: 1.2ms
           </p>
         </div>
       </div>

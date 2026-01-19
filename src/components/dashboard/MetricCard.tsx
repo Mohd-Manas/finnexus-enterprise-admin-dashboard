@@ -14,7 +14,9 @@ import {
   Activity,
   BarChart3,
   Bell,
-  ShieldCheck
+  ShieldCheck,
+  Megaphone,
+  CheckSquare
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 const ICONS: Record<string, LucideIcon> = {
@@ -28,7 +30,9 @@ const ICONS: Record<string, LucideIcon> = {
   Activity,
   BarChart3,
   Bell,
-  ShieldCheck
+  ShieldCheck,
+  Megaphone,
+  CheckSquare
 };
 interface MetricCardProps {
   title: string;
@@ -48,7 +52,7 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
               {title}
             </p>
             <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center transition-all group-hover:bg-primary/10 border border-transparent group-hover:border-primary/20 shrink-0 ml-2 shadow-sm">
-              <Icon className="h-6 w-6 text-primary shrink-0" />
+              <Icon className="h-6 w-6 text-primary shrink-0 transition-transform group-hover:scale-110" />
             </div>
           </div>
           <div className="flex flex-col gap-1.5 mt-1">
@@ -57,7 +61,7 @@ export function MetricCard({ title, value, trend, change, icon }: MetricCardProp
             </h2>
             <div className="flex flex-wrap items-center gap-2 mt-3">
               <span className={cn(
-                "flex items-center text-[10px] font-black px-2 py-1 rounded-lg border uppercase tracking-wider whitespace-nowrap shadow-sm transition-colors",
+                "flex items-center text-[10px] font-black px-2 py-1 rounded-lg border uppercase tracking-wider whitespace-nowrap shadow-sm transition-all",
                 trend === "up"
                   ? "bg-emerald-600 text-white border-emerald-500"
                   : "bg-rose-600 text-white border-rose-500"

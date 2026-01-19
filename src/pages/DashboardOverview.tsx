@@ -29,21 +29,27 @@ import {
   TrendingUp
 } from "lucide-react";
 import { toast } from "sonner";
+/**
+ * Static style object moved outside render cycle for performance.
+ * Shorthand 'border' property replaced with explicit longhand properties
+ * to resolve Recharts/React runtime styling conflict warnings.
+ */
+const TOOLTIP_STYLE = {
+  backgroundColor: "hsl(var(--background))",
+  borderWidth: "1px",
+  borderStyle: "solid",
+  borderColor: "hsl(var(--border))",
+  borderRadius: "12px",
+  fontSize: "10px",
+  fontWeight: 900,
+  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+} as const;
 export function DashboardOverview() {
   const handleRefresh = () => {
     toast.info("Establishing terminal handshake...", {
       description: "Resyncing global node clusters and clear-air data feeds."
     });
   };
-  const TOOLTIP_STYLE = {
-    backgroundColor: "hsl(var(--background))",
-    borderColor: "hsl(var(--border))",
-    borderRadius: "12px",
-    fontSize: "10px",
-    fontWeight: 900,
-    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-    border: "1px solid hsl(var(--border))"
-  } as const;
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12 space-y-10 animate-fade-in">

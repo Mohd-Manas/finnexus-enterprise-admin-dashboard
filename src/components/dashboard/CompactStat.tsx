@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Progress } from "@/components/ui/badge"; // Using UI progress is better but let's stick to a custom one for density
 interface CompactStatProps {
   label: string;
   value: string;

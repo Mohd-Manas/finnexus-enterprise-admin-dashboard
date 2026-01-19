@@ -3,11 +3,11 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { HorizontalMetric } from "@/components/dashboard/HorizontalMetric";
 import { CompactStat } from "@/components/dashboard/CompactStat";
 import { 
-  DASHBOARD_MARKETING_STATS, 
-  DASHBOARD_BACKOFFICE_STATS, 
-  DASHBOARD_TASK_STATS, 
-  PNL_CHART_DATA 
-} from "@/shared/mock-data";
+  DASHBOARD_MARKETING_STATS,
+  DASHBOARD_BACKOFFICE_STATS,
+  DASHBOARD_TASK_STATS,
+  PNL_CHART_DATA
+} from "@/lib/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 

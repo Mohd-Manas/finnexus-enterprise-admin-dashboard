@@ -2,25 +2,29 @@ import React from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { HorizontalMetric } from "@/components/dashboard/HorizontalMetric";
 import { CompactStat } from "@/components/dashboard/CompactStat";
-import { 
+import {
   DASHBOARD_MARKETING_STATS,
   DASHBOARD_BACKOFFICE_STATS,
   DASHBOARD_TASK_STATS,
-  PNL_CHART_DATA
+  PNL_CHART_DATA,
+  CHANNEL_BREAKDOWN,
+  COMPLIANCE_TYPE_STATS,
+  TASK_STATUS_STATS
 } from "@/lib/mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, BarChart, Bar
 } from "recharts";
-import { 
-  RefreshCcw, 
-  FileDown, 
-  LayoutGrid, 
-  Layers, 
-  Activity, 
-  ShieldCheck, 
-  Zap, 
+import {
+  RefreshCcw,
+  FileDown,
+  LayoutGrid,
+  Layers,
+  Activity,
+  ShieldCheck,
+  Zap,
   ChevronRight,
   TrendingUp
 } from "lucide-react";
@@ -28,6 +32,14 @@ import { toast } from "sonner";
 export function DashboardOverview() {
   const handleRefresh = () => {
     toast.info("Establishing terminal handshake...", { description: "Resyncing global node clusters." });
+  };
+  const TOOLTIP_STYLE = {
+    backgroundColor: "hsl(var(--background))",
+    borderColor: "hsl(var(--border))",
+    borderRadius: "12px",
+    fontSize: "10px",
+    fontWeight: 900,
+    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
   };
   return (
     <DashboardLayout>
@@ -43,17 +55,17 @@ export function DashboardOverview() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="h-10 text-[10px] font-black uppercase tracking-widest px-4 border-slate-300 dark:border-slate-700 shadow-sm"
               onClick={handleRefresh}
             >
               <RefreshCcw className="h-3.5 w-3.5 mr-2" /> Refresh Node
             </Button>
-            <Button 
-              variant="default" 
-              size="sm" 
+            <Button
+              variant="default"
+              size="sm"
               className="h-10 text-[10px] font-black uppercase tracking-widest px-4 bg-[#020B4B] hover:bg-[#1E3A8A] shadow-glow"
             >
               <FileDown className="h-3.5 w-3.5 mr-2" /> Global Export
@@ -62,8 +74,8 @@ export function DashboardOverview() {
         </div>
         {/* 2x2 High-Density Matrix */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Card 1: Dealing Sector (Analytical Focus) */}
-          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
+          {/* Sector 1: Dealing Desk (Analytical Focus) */}
+          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col transition-all hover:shadow-primary/5">
             <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4 flex flex-row items-center justify-between">
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-4 w-4 text-[#020B4B] dark:text-blue-400" />
@@ -73,8 +85,16 @@ export function DashboardOverview() {
                 Full Metrics <ChevronRight className="h-3 w-3 ml-1" />
               </Button>
             </CardHeader>
-            <CardContent className="p-6 flex-1 flex flex-col justify-between space-y-8">
-              <div className="h-[240px] w-full">
+            <CardContent className="p-6 flex-1 flex flex-col gap-8">
+              {/* Metrics on Top for Balance */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <HorizontalMetric label="Daily Exposure" value="$42.8M" trend="+5.4%" trendValue="up" icon={Layers} />
+                <HorizontalMetric label="Margin Risk" value="2.1%" trend="-0.8%" trendValue="down" icon={ShieldCheck} />
+                <HorizontalMetric label="Active Nodes" value="24" trend="+2" trendValue="up" icon={Activity} />
+                <HorizontalMetric label="Avg Latency" value="1.2ms" trend="-0.1ms" trendValue="down" icon={Zap} />
+              </div>
+              {/* Performance Chart on Bottom */}
+              <div className="h-[200px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={PNL_CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
@@ -86,34 +106,25 @@ export function DashboardOverview() {
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }} />
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))", borderRadius: "12px", fontSize: "10px", fontWeight: 900 }}
-                      itemStyle={{ color: "#020B4B" }}
-                    />
-                    <Area type="monotone" dataKey="pnl" stroke="#020B4B" strokeWidth={4} fill="url(#navGradient)" animationDuration={1500} />
+                    <Tooltip contentStyle={TOOLTIP_STYLE} itemStyle={{ color: "#020B4B" }} />
+                    <Area type="monotone" dataKey="pnl" stroke="#020B4B" strokeWidth={3} fill="url(#navGradient)" animationDuration={1500} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <HorizontalMetric label="Daily Exposure" value="$42.8M" trend="+5.4%" trendValue="up" icon={Layers} />
-                <HorizontalMetric label="Margin Risk" value="2.1%" trend="-0.8%" trendValue="down" icon={ShieldCheck} />
-                <HorizontalMetric label="Active Nodes" value="24" trend="+2" trendValue="up" icon={Activity} />
-                <HorizontalMetric label="Avg Latency" value="1.2ms" trend="-0.1ms" trendValue="down" icon={Zap} />
-              </div>
             </CardContent>
           </Card>
-          {/* Card 2: Marketing Intelligence (Compact Stats Grid) */}
-          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden">
+          {/* Sector 2: Marketing Intelligence (Distribution Analytics) */}
+          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
             <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
               <div className="flex items-center gap-3">
                 <LayoutGrid className="h-4 w-4 text-emerald-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Marketing Intelligence</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-8">
-              <div className="grid grid-cols-2 gap-x-12 gap-y-12">
+            <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {DASHBOARD_MARKETING_STATS.map((stat, i) => (
-                  <CompactStat 
+                  <CompactStat
                     key={i}
                     label={stat.label}
                     value={stat.value}
@@ -123,29 +134,48 @@ export function DashboardOverview() {
                   />
                 ))}
               </div>
-              <div className="mt-12 pt-8 border-t border-dashed border-slate-200 dark:border-slate-800">
-                <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Acquisition Efficiency</p>
-                    <p className="text-sm font-black text-[#020B4B] dark:text-blue-400 uppercase">94.2 Score Index</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="h-8 text-[9px] font-black uppercase tracking-[0.2em] border-emerald-500/30 text-emerald-600 bg-emerald-500/5">Optimize Channel</Button>
+              <div className="flex-1 flex flex-col min-h-[220px]">
+                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 text-center">Node Channel Acquisition</p>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={CHANNEL_BREAKDOWN}
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                      animationDuration={1500}
+                    >
+                      {CHANNEL_BREAKDOWN.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={TOOLTIP_STYLE} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                   {CHANNEL_BREAKDOWN.map((c, i) => (
+                     <div key={i} className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
+                       <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: c.fill }} />
+                       {c.name}
+                     </div>
+                   ))}
                 </div>
               </div>
             </CardContent>
           </Card>
-          {/* Card 3: Operations Center (Back Office Velocity) */}
-          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden">
+          {/* Sector 3: Operations Center (Compliance & Velocity) */}
+          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
             <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-blue-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Operations Center</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-8">
-              <div className="grid grid-cols-2 gap-x-12 gap-y-12">
+            <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {DASHBOARD_BACKOFFICE_STATS.map((stat, i) => (
-                  <CompactStat 
+                  <CompactStat
                     key={i}
                     label={stat.label}
                     value={stat.value}
@@ -156,29 +186,31 @@ export function DashboardOverview() {
                   />
                 ))}
               </div>
-              <div className="mt-12 pt-8 border-t border-dashed border-slate-200 dark:border-slate-800">
-                <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Compliance Radar</p>
-                    <p className="text-sm font-black text-rose-600 uppercase">3 High Severity Alerts</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="h-8 text-[9px] font-black uppercase tracking-[0.2em] border-rose-500/30 text-rose-600 bg-rose-500/5">Scrub Node</Button>
-                </div>
+              <div className="flex-1 min-h-[220px] flex flex-col">
+                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 text-center">Compliance Log Volume</p>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={COMPLIANCE_TYPE_STATS} layout="vertical" margin={{ left: 20, right: 20 }}>
+                    <XAxis type="number" hide />
+                    <YAxis dataKey="category" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: "hsl(var(--muted-foreground))" }} width={60} />
+                    <Tooltip contentStyle={TOOLTIP_STYLE} cursor={{ fill: 'transparent' }} />
+                    <Bar dataKey="volume" fill="#020B4B" radius={[0, 4, 4, 0]} barSize={20} />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
-          {/* Card 4: Task Force Command (Sprint & Load) */}
-          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden">
+          {/* Sector 4: Task Force Command (Status & Capacity) */}
+          <Card className="col-span-1 border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/40 backdrop-blur-xl shadow-glow-lg overflow-hidden flex flex-col">
             <CardHeader className="border-b bg-slate-50/50 dark:bg-slate-900/50 px-6 py-4">
               <div className="flex items-center gap-3">
                 <Activity className="h-4 w-4 text-indigo-500" />
                 <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Task Force Command</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-8">
-              <div className="grid grid-cols-2 gap-x-12 gap-y-12">
+            <CardContent className="p-6 space-y-8 flex-1 flex flex-col">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {DASHBOARD_TASK_STATS.map((stat, i) => (
-                  <CompactStat 
+                  <CompactStat
                     key={i}
                     label={stat.label}
                     value={stat.value}
@@ -188,13 +220,33 @@ export function DashboardOverview() {
                   />
                 ))}
               </div>
-              <div className="mt-12 pt-8 border-t border-dashed border-slate-200 dark:border-slate-800">
-                <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Team Capacity</p>
-                    <p className="text-sm font-black text-indigo-600 uppercase">Available bandwidth found</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="h-8 text-[9px] font-black uppercase tracking-[0.2em] border-indigo-500/30 text-indigo-600 bg-indigo-500/5">Assign Cluster</Button>
+              <div className="flex-1 min-h-[220px] flex flex-col">
+                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 text-center">Sprint Status Distribution</p>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={TASK_STATUS_STATS}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      dataKey="value"
+                      animationDuration={1500}
+                      stroke="transparent"
+                    >
+                      {TASK_STATUS_STATS.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={TOOLTIP_STYLE} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                   {TASK_STATUS_STATS.map((s, i) => (
+                     <div key={i} className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
+                       <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: s.fill }} />
+                       {s.name}
+                     </div>
+                   ))}
                 </div>
               </div>
             </CardContent>

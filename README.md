@@ -1,6 +1,6 @@
 # Finnexus CMS Dashboard
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Mohd-Manas/finnexus-enterprise-admin-dashboard)
 
 A modern, full-stack CMS dashboard built on Cloudflare Workers with Durable Objects for stateful entities, React frontend, and Shadcn UI. Features real-time chat boards, user management, and scalable API endpoints. Production-ready with TypeScript, Tailwind CSS, and TanStack Query.
 
@@ -68,7 +68,7 @@ bun run deploy
 
 Or use the button below for instant deployment:
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Mohd-Manas/finnexus-enterprise-admin-dashboard)
 
 **Pro Tip**: `wrangler deploy --dry-run` to validate before deploying. Assets are automatically bundled as SPA.
 
